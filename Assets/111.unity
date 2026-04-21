@@ -1466,7 +1466,6 @@ GameObject:
   - component: {fileID: 1245653818}
   - component: {fileID: 1245653819}
   - component: {fileID: 1245653820}
-  - component: {fileID: 1245653821}
   m_Layer: 0
   m_Name: Power
   m_TagString: Untagged
@@ -1496,7 +1495,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1245653817}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8e80be04846067458abc35f13f7a2b5, type: 3}
   m_Name: 
@@ -1506,8 +1505,8 @@ MonoBehaviour:
   ball: {fileID: 6957833921619304983, guid: 0ec78a36091cc86409f9f5ce2e1a70e3, type: 3}
   ballRadius: 0.5
   magneticForce: 10
-  bounceForce: 0.5
-  minUpwardVelocity: 5
+  bounceForce: 0.2
+  minUpwardVelocity: 4
   showDebug: 1
   velocityFollowFactor: 15
   minVelocity: 0.2
@@ -1532,30 +1531,7 @@ MonoBehaviour:
   autoActivateAcrobat: 1
   spawnKey: 32
   resetKey: 31
-  acrobatSystem: {fileID: 0}
---- !u!114 &1245653821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1245653817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcea214ae5db38a43b878973549875db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RealPhysicsAcrobatHeadBalance
-  headTransform: {fileID: 478694883}
-  headRadius: 0.15
-  ball: {fileID: 6957833921619304983, guid: 0ec78a36091cc86409f9f5ce2e1a70e3, type: 3}
-  ballRadius: 0.5
-  showDebug: 1
-  collisionForce: 10
-  frictionCoefficient: 0.8
-  stabilityFactor: 5
-  maxCollisionForce: 20
-  bounceForce: 10
-  minUpwardVelocity: 0.5
+  acrobatSystem: {fileID: 1245653819}
 --- !u!4 &1252776553 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1330755669629619180, guid: 8ff22c0ced474294caa263309fd8ba1d, type: 3}
