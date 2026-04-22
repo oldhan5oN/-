@@ -673,7 +673,7 @@ MonoBehaviour:
   headTransform: {fileID: 145445627}
   ballTag: Ball
   headUpThreshold: 0.5
-  ballForceMultiplier: 20
+  ballForceMultiplier: 0.5
   showDebug: 1
 --- !u!1 &659385094
 GameObject:
@@ -2752,13 +2752,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2132550428}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -3.91}
+  m_LocalRotation: {x: -0.04883305, y: -0, z: -0, w: 0.99880695}
+  m_LocalPosition: {x: 0, y: 2.481, z: -5.656}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -5.598, y: 0, z: 0}
 --- !u!114 &2132550434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2865,8 +2865,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1624308337232167849, guid: bfb1de11c5c72c94983dadcac69828d5, type: 3}
+      propertyPath: m_Size.x
+      value: 3.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1624308337232167849, guid: bfb1de11c5c72c94983dadcac69828d5, type: 3}
       propertyPath: m_Size.y
-      value: 0.7
+      value: 1.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 1624308337232167849, guid: bfb1de11c5c72c94983dadcac69828d5, type: 3}
+      propertyPath: m_Size.z
+      value: 3.02
       objectReference: {fileID: 0}
     - target: {fileID: 3131388507934461381, guid: bfb1de11c5c72c94983dadcac69828d5, type: 3}
       propertyPath: rotationSpeed
