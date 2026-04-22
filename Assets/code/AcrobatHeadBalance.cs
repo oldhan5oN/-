@@ -46,15 +46,19 @@ public class AcrobatHeadBalance : MonoBehaviour
                 if (ballRb == null)
                 {
                     ballRb = ball.AddComponent<Rigidbody>();
-                    ballRb.constraints = RigidbodyConstraints.FreezeRotation;
-                    ballRb.mass = 0.5f;
+                    ballRb.constraints = RigidbodyConstraints.None; // 解除旋转锁定
+                    ballRb.mass = 2f; // 增加质量，更真实
                     ballRb.useGravity = true;
+                    ballRb.linearDamping = 0.1f; // 空气阻力
+                    ballRb.angularDamping = 0.5f; // 旋转阻力
                 }
                 else
                 {
-                    ballRb.constraints = RigidbodyConstraints.FreezeRotation;
-                    ballRb.mass = 0.5f;
+                    ballRb.constraints = RigidbodyConstraints.None; // 解除旋转锁定
+                    ballRb.mass = 2f; // 增加质量，更真实
                     ballRb.useGravity = true;
+                    ballRb.linearDamping = 0.1f; // 空气阻力
+                    ballRb.angularDamping = 0.5f; // 旋转阻力
                 }
                 Debug.Log("Ball updated: " + ball.name);
             }
@@ -166,15 +170,25 @@ public class AcrobatHeadBalance : MonoBehaviour
 
     [Header("速度控制设置")]
     [Tooltip("速度跟随因子 - 越大越跟手")]
-    public float velocityFollowFactor = 15f;
+    public float velocityFollowFactor = 8f;
     [Tooltip("最小速度阈值 - 确保微小移动也能响应")]
-    public float minVelocity = 0.2f;
+    public float minVelocity = 0.1f;
     [Tooltip("最大速度限制")]
-    public float maxVelocity = 3f;
+    public float maxVelocity = 2f;
     [Tooltip("速度阻尼 - 消耗多余速度")]
-    public float velocityDamping = 0.3f;
+    public float velocityDamping = 0.6f;
     [Tooltip("平滑因子 - 越大过渡越快")]
-    public float smoothFactor = 15f;
+    public float smoothFactor = 8f;
+    [Tooltip("水平惯性因子 - 越大惯性越大")]
+    public float horizontalInertiaFactor = 0.8f;
+
+    [Header("定向设置")]
+    [Tooltip("是否保持缸的方向稳定")]
+    public bool stabilizeOrientation = true;
+    [Tooltip("方向稳定系数")]
+    public float orientationStability = 5f;
+    [Tooltip("方向阻尼 - 减少抖动")]
+    public float orientationDamping = 0.5f;
 
     private void ApplyPhysics()
     {
@@ -188,7 +202,19 @@ public class AcrobatHeadBalance : MonoBehaviour
 
         // 计算目标速度（基于位置差）
         Vector3 positionError = targetPosition - ball.transform.position;
-        Vector3 targetVelocity = positionError * velocityFollowFactor;
+        
+        // 分离水平和垂直分量
+        Vector3 horizontalError = new Vector3(positionError.x, 0, positionError.z);
+        Vector3 verticalError = new Vector3(0, positionError.y, 0);
+        
+        // 水平方向：添加惯性效果
+        Vector3 horizontalTargetVelocity = horizontalError * velocityFollowFactor;
+        
+        // 垂直方向：保持稳定
+        Vector3 verticalTargetVelocity = verticalError * (velocityFollowFactor * 1.5f); // 垂直方向响应更快
+        
+        // 组合目标速度
+        Vector3 targetVelocity = horizontalTargetVelocity + verticalTargetVelocity;
         
         // 确保微小移动也能响应
         if (targetVelocity.magnitude < minVelocity && positionError.magnitude > 0.01f)
@@ -202,15 +228,46 @@ public class AcrobatHeadBalance : MonoBehaviour
             targetVelocity = targetVelocity.normalized * maxVelocity;
         }
 
-        // 速度平滑过渡（使用更大的平滑因子）
+        // 速度平滑过渡（使用更小的平滑因子，增加惯性感）
         Vector3 currentVelocity = ballRb.linearVelocity;
-        Vector3 newVelocity = Vector3.Lerp(currentVelocity, targetVelocity, Time.fixedDeltaTime * smoothFactor);
+        
+        // 水平方向添加惯性
+        Vector3 horizontalCurrentVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
+        Vector3 horizontalNewVelocity = Vector3.Lerp(horizontalCurrentVelocity, horizontalTargetVelocity, Time.fixedDeltaTime * smoothFactor * horizontalInertiaFactor);
+        
+        // 垂直方向保持稳定
+        Vector3 verticalCurrentVelocity = new Vector3(0, currentVelocity.y, 0);
+        Vector3 verticalNewVelocity = Vector3.Lerp(verticalCurrentVelocity, verticalTargetVelocity, Time.fixedDeltaTime * smoothFactor * 1.5f);
+        
+        // 组合新速度
+        Vector3 newVelocity = horizontalNewVelocity + verticalNewVelocity;
         
         // 应用速度阻尼
         newVelocity *= (1f - velocityDamping * Time.fixedDeltaTime);
         
         // 直接设置速度（消除弹性感）
         ballRb.linearVelocity = newVelocity;
+
+        // 方向稳定 - 保持缸的方向，确保接触点稳定
+        if (stabilizeOrientation)
+        {
+            // 计算目标方向（保持缸的底部朝向头部）
+            Quaternion targetRotation = Quaternion.LookRotation(headTransform.forward, Vector3.up);
+            
+            // 应用旋转力使缸保持稳定方向
+            Quaternion rotationError = targetRotation * Quaternion.Inverse(ball.transform.rotation);
+            Vector3 rotationAxis;
+            float rotationAngle;
+            rotationError.ToAngleAxis(out rotationAngle, out rotationAxis);
+            
+            if (rotationAngle > 0.1f)
+            {
+                // 减少旋转力并添加阻尼，减少抖动
+                Vector3 torque = rotationAxis * rotationAngle * orientationStability * ballRb.mass;
+                torque *= (1f - orientationDamping * Time.fixedDeltaTime);
+                ballRb.AddTorque(torque, ForceMode.Force);
+            }
+        }
 
         // 保留头部向上移动时的顶起力
         if (headVelocity.y > minUpwardVelocity)

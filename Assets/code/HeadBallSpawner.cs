@@ -1,161 +1,127 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// 头部球生成器 - 在头部上方生成球并支持复位
-/// 功能：按指定按键生成球，按另一按键复位球位置
-/// </summary>
 public class HeadBallSpawner : MonoBehaviour
 {
-    [Header("头部设置")]
-    [Tooltip("头部Transform")]
-    public Transform headTransform;
-    [Tooltip("生成高度（头部上方距离）")]
-    public float spawnHeight = 2.0f;
-
     [Header("球设置")]
-    [Tooltip("球预制体")]
-    public GameObject ballPrefab;
-    [Tooltip("球生成后是否自动激活顶缸系统")]
-    public bool autoActivateAcrobat = true;
+    public GameObject ballPrefab; // 球预制体
+    public Transform head; // 头部对象
+    public float height = 1.5f; // 头顶上方的高度
+    public bool setBallTag = true; // 是否自动设置球标签
 
     [Header("按键设置")]
-    [Tooltip("生成球的按键")]
-    public Key spawnKey = Key.Space;
-    [Tooltip("复位球的按键")]
-    public Key resetKey = Key.R;
+    public Key spawnKey = Key.Space; // 生成按键
+    public Key resetKey = Key.R; // 重置按键
+    public Key destroyKey = Key.X; // 销毁按键
 
-    [Header("引用")]
-    [Tooltip("顶缸系统脚本")]
-    public AcrobatHeadBalance acrobatSystem;
+    [Header("调试")]
+    public bool showDebug = true;
 
     private GameObject currentBall;
-    private Vector3 initialBallPosition;
+    private Vector3 initialPos;
+    private InputAction spawnAction;
+    private InputAction resetAction;
+    private InputAction destroyAction;
 
     private void Awake()
     {
-        if (headTransform == null)
-        {
-            headTransform = transform;
-            Debug.Log("HeadBallSpawner: headTransform set to self.");
-        }
+        spawnAction = new InputAction(binding: "<Keyboard>/" + spawnKey);
+        resetAction = new InputAction(binding: "<Keyboard>/" + resetKey);
+        destroyAction = new InputAction(binding: "<Keyboard>/" + destroyKey);
+    }
 
-        if (ballPrefab == null)
-        {
-            Debug.LogError("HeadBallSpawner: ballPrefab not assigned.");
-            enabled = false;
-        }
+    private void OnEnable()
+    {
+        spawnAction.Enable();
+        resetAction.Enable();
+        destroyAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        spawnAction.Disable();
+        resetAction.Disable();
+        destroyAction.Disable();
     }
 
     private void Update()
     {
-        // 生成球
-        if (Keyboard.current[spawnKey].wasPressedThisFrame)
+        if (spawnAction.WasPressedThisFrame())
         {
             SpawnBall();
         }
-
-        // 复位球
-        if (Keyboard.current[resetKey].wasPressedThisFrame)
+        if (resetAction.WasPressedThisFrame())
         {
             ResetBall();
         }
+        if (destroyAction.WasPressedThisFrame())
+        {
+            DestroyBall();
+        }
     }
 
-    /// <summary>
-    /// 生成球
-    /// </summary>
     private void SpawnBall()
+    {
+        if (ballPrefab == null)
+        {
+            Debug.LogError("HeadBallSpawner: 没有设置球预制体！");
+            return;
+        }
+        if (head == null)
+        {
+            Debug.LogError("HeadBallSpawner: 没有设置头部对象！");
+            return;
+        }
+
+        DestroyBall();
+        initialPos = head.position + Vector3.up * height;
+        currentBall = Instantiate(ballPrefab, initialPos, Quaternion.identity);
+        
+        // 设置球标签
+        if (setBallTag)
+        {
+            currentBall.tag = "Ball";
+        }
+        
+        if (showDebug)
+        {
+            Debug.Log("HeadBallSpawner: 球已生成！");
+        }
+    }
+
+    private void ResetBall()
     {
         if (currentBall != null)
         {
-            Debug.Log("HeadBallSpawner: Ball already exists.");
-            return;
+            Rigidbody rb = currentBall.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+            currentBall.transform.position = initialPos;
+            if (showDebug) Debug.Log("HeadBallSpawner: 球已重置！");
         }
-
-        // 计算生成位置
-        Vector3 spawnPosition = headTransform.position + Vector3.up * spawnHeight;
-        initialBallPosition = spawnPosition;
-
-        // 生成球
-        currentBall = Instantiate(ballPrefab, spawnPosition, Quaternion.identity);
-        currentBall.name = "HeadBall";
-
-        // 添加Rigidbody（如果没有）
-        Rigidbody rb = currentBall.GetComponent<Rigidbody>();
-        if (rb == null)
-        {
-            rb = currentBall.AddComponent<Rigidbody>();
-            rb.constraints = RigidbodyConstraints.FreezeRotation;
-            rb.mass = 0.5f;
-            rb.useGravity = true;
-        }
-
-        // 自动激活顶缸系统
-        if (autoActivateAcrobat && acrobatSystem != null)
-        {
-            acrobatSystem.SetBall(currentBall);
-            Debug.Log("HeadBallSpawner: Acrobat system activated with new ball.");
-        }
-
-        Debug.Log($"HeadBallSpawner: Ball spawned at position: {spawnPosition}");
     }
 
-    /// <summary>
-    /// 复位球
-    /// </summary>
-    private void ResetBall()
-    {
-        if (currentBall == null)
-        {
-            Debug.Log("HeadBallSpawner: No ball to reset.");
-            return;
-        }
-
-        // 重置位置
-        currentBall.transform.position = initialBallPosition;
-        currentBall.transform.rotation = Quaternion.identity;
-
-        // 重置速度
-        Rigidbody rb = currentBall.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-        }
-
-        Debug.Log($"HeadBallSpawner: Ball reset to position: {initialBallPosition}");
-    }
-
-    /// <summary>
-    /// 清理球
-    /// </summary>
-    public void ClearBall()
+    private void DestroyBall()
     {
         if (currentBall != null)
         {
             Destroy(currentBall);
             currentBall = null;
-            Debug.Log("HeadBallSpawner: Ball cleared.");
+            if (showDebug) Debug.Log("HeadBallSpawner: 球已销毁！");
         }
     }
 
     private void OnDrawGizmos()
     {
-        if (headTransform == null)
-            return;
+        if (!showDebug || head == null) return;
 
-        // 绘制生成位置
-        Gizmos.color = Color.yellow;
-        Vector3 spawnPosition = headTransform.position + Vector3.up * spawnHeight;
-        Gizmos.DrawWireSphere(spawnPosition, 0.2f);
-        Gizmos.DrawLine(headTransform.position, spawnPosition);
-
-        // 绘制当前球
-        if (currentBall != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(currentBall.transform.position, 0.3f);
-        }
+        // 生成位置标记
+        Gizmos.color = Color.cyan;
+        Vector3 spawnPos = head.position + Vector3.up * height;
+        Gizmos.DrawWireSphere(spawnPos, 0.3f);
+        Gizmos.DrawLine(head.position, spawnPos);
     }
 }
