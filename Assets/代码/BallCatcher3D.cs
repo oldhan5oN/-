@@ -37,11 +37,7 @@ public class BallCatcher3D : MonoBehaviour
 
     private void Update()
     {
-        if (isCatching)
-        {
-            // 只有在接球状态时才更新挡板旋转
             LerpGuards();
-        }
     }
 
     private void LerpGuards()
@@ -69,9 +65,11 @@ public class BallCatcher3D : MonoBehaviour
         if (other.CompareTag(ballTag))
         {
             isCatching = true;
+            Debug.Log("BallCatcher3D: 球进入");
             // 球进入时：显示挡板并立即关闭（垂直状态）
             ShowGuards();
             CloseGuards();
+            
             if (showDebug) Debug.Log("BallCatcher3D: 球进入！显示挡板并关闭");
         }
     }
@@ -83,6 +81,7 @@ public class BallCatcher3D : MonoBehaviour
             isCatching = false;
             // 球离开时：隐藏挡板
             HideGuards();
+            OpenGuards();
             if (showDebug) Debug.Log("BallCatcher3D: 球离开！隐藏挡板");
         }
     }
@@ -107,14 +106,10 @@ public class BallCatcher3D : MonoBehaviour
 
     public void OpenGuards()
     {
-        // 挡板向外打开 - 3D版本
-        // 前后挡板绕X轴旋转
-        frontTargetRot = Quaternion.Euler(-openAngle, 0f, 0f);  // 向前倾斜
-        backTargetRot = Quaternion.Euler(openAngle, 0f, 0f);    // 向后倾斜
-        
-        // 左右挡板绕Z轴旋转
-        leftTargetRot = Quaternion.Euler(0f, 0f, openAngle);    // 向左倾斜
-        rightTargetRot = Quaternion.Euler(0f, 0f, -openAngle);  // 向右倾斜
+        frontTargetRot = Quaternion.Euler(0f, 0f, 0f);  // 向前倾斜
+        backTargetRot = Quaternion.Euler(0f, 0f, 0f);    // 向后倾斜
+        leftTargetRot = Quaternion.Euler(0f, 0f, 0f);    // 向左倾斜
+        rightTargetRot = Quaternion.Euler(0f, 0f, 0f);  // 向右倾斜
         
         if (showDebug) Debug.Log($"BallCatcher3D: 打开挡板，角度={openAngle}");
     }
