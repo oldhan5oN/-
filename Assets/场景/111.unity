@@ -2518,7 +2518,7 @@ MonoBehaviour:
   moveRate: 1
   smoothFactor: 10
   offsetNode: {fileID: 0}
-  posRelativeToCamera: {fileID: 2132550432}
+  posRelativeToCamera: {fileID: 0}
   posRelOverlayColor: 0
   groundedFeet: 1
   applyMuscleLimits: 1
