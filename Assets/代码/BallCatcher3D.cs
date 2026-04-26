@@ -37,6 +37,7 @@ public class BallCatcher3D : MonoBehaviour
 
     private void Update()
     {
+        
             LerpGuards();
     }
 
