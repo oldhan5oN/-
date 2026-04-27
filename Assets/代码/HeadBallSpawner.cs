@@ -60,7 +60,7 @@ public class HeadBallSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnBall()
+    public void SpawnBall()
     {
         if (ballPrefab == null)
         {
