@@ -75,7 +75,8 @@ public class HeadBallSpawner : MonoBehaviour
 
         DestroyBall();
         initialPos = head.position + Vector3.up * height;
-        currentBall = Instantiate(ballPrefab, initialPos, Quaternion.identity);
+        Quaternion spawn=Quaternion.Euler(0,180,0);
+        currentBall = Instantiate(ballPrefab, initialPos, spawn);
         
         // 设置球标签
         if (setBallTag)

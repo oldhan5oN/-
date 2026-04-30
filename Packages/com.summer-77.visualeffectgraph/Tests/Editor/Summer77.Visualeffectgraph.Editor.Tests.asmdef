@@ -1,0 +1,14 @@
+{
+    "name": "Summer77.Visualeffectgraph.Editor.Tests",
+    "references": [
+        "Summer77.Visualeffectgraph.Editor",
+        "Summer77.Visualeffectgraph"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}
