@@ -10,6 +10,14 @@
       },
       "hash": "e64a71770adc78d7cdc97fc95e8188726f81a138"
     },
+    "com.summer-77.visualeffectgraph": {
+      "version": "file:com.summer-77.visualeffectgraph",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.test-framework": "1.6.0"
+      }
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.10",
       "depth": 0,

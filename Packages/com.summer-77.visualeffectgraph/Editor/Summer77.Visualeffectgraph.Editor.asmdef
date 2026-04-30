@@ -1,0 +1,10 @@
+{
+    "name": "Summer77.Visualeffectgraph.Editor",
+    "references": [
+      "Summer77.Visualeffectgraph"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}
