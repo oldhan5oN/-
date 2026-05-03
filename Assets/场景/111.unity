@@ -935,22 +935,22 @@ MonoBehaviour:
   displaySkeletonLines: 1
   DisplayMapsWidthPercent: 20
   useMultiSourceReader: 0
-  minUserDistance: 0.5
+  minUserDistance: 1
   maxUserDistance: 0
   maxLeftRightDistance: 0
   maxTrackedUsers: 6
   showTrackedUsersOnly: 1
   userDetectionOrder: 0
   centralPosition: {x: 0, y: 0, z: 0}
-  ignoreInferredJoints: 0
+  ignoreInferredJoints: 1
   ignoreZCoordinates: 0
   lateUpdateAvatars: 0
   skipRemoteAvatars: 0
-  smoothing: 1
+  smoothing: 4
   useBoneOrientationConstraints: 1
   estimateJointVelocities: 0
   velocitySmoothing: 2
-  allowTurnArounds: 0
+  allowTurnArounds: 1
   usersFaceBackwards: 0
   allowedHandRotations: 1
   avatarControllers: []
@@ -7725,7 +7725,7 @@ MonoBehaviour:
   externalHandRotations: 0
   fingerOrientations: 1
   moveRate: 1
-  smoothFactor: 10
+  smoothFactor: 20
   offsetNode: {fileID: 0}
   posRelativeToCamera: {fileID: 0}
   posRelOverlayColor: 0
