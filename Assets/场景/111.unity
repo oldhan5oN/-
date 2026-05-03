@@ -6460,6 +6460,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f930f773ff3b9b1448ebc25dfdd34456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeadBallSpawner
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  checkRadius: 0.5
+  isGrounded: 1
   ballPrefab: {fileID: 6957833921619304983, guid: f79f8b5a276b6fc4481c146598a5fcab, type: 3}
   head: {fileID: 478694883}
   height: 3

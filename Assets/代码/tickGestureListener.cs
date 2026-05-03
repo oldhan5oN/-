@@ -5,17 +5,30 @@ public class StickGestureListener : MonoBehaviour, KinectGestures.GestureListene
     [Header("Player")]
     public int playerIndex = 0;
 
+    [Header("Avatar Bones")]
+    [Tooltip("Avatar 的右手骨骼（从 Hierarchy 里拖）")]
+    public Transform rightHandBone;
+
+    [Tooltip("Avatar 的左手骨骼（从 Hierarchy 里拖）")]
+    public Transform leftHandBone;
+
+    [Tooltip("Avatar 的右手肘骨骼（用于计算小臂方向）")]
+    public Transform rightElbowBone;
+
+    [Tooltip("Avatar 的左手肘骨骼")]
+    public Transform leftElbowBone;
+
     [Header("Stick")]
     public GameObject stickRootObject;
     public Rigidbody stickRb;
 
-    [Tooltip("棍子相对手掌的位置偏移（本地空间，例如握点）")]
+    [Tooltip("棍子相对手掌的位置偏移")]
     public Vector3 gripOffset = new Vector3(0f, -0.1f, 0f);
 
-    [Tooltip("棍子模型默认朝向的本地轴。如果棍子竖着是Y轴=Y，如果前向是Z轴=Z")]
+    [Tooltip("棍子模型默认朝向的本地轴")]
     public Vector3 stickLocalUpAxis = Vector3.up;
 
-    [Tooltip("额外旋转微调（度），调不正的时候用")]
+    [Tooltip("额外旋转微调")]
     public Vector3 extraRotationEuler = Vector3.zero;
 
     [Header("Follow")]
@@ -26,7 +39,7 @@ public class StickGestureListener : MonoBehaviour, KinectGestures.GestureListene
     [Tooltip("是否用小臂方向旋转棍子")]
     public bool followArmDirection = true;
 
-    [Tooltip("小臂方向过短时不更新旋转，避免抖动")]
+    [Tooltip("小臂方向过短时不更新旋转")]
     public float minArmLength = 0.05f;
 
     [Header("Debug")]
@@ -34,8 +47,8 @@ public class StickGestureListener : MonoBehaviour, KinectGestures.GestureListene
     public bool useRightHand = true;
 
     private long trackedUserId = 0;
-    private KinectInterop.JointType trackedHandJoint = KinectInterop.JointType.HandRight;
-    private KinectInterop.JointType trackedElbowJoint = KinectInterop.JointType.ElbowRight;
+    private Transform currentHandBone;
+    private Transform currentElbowBone;
 
     private void Start()
     {
@@ -84,7 +97,6 @@ public class StickGestureListener : MonoBehaviour, KinectGestures.GestureListene
         KinectInterop.JointType joint,
         Vector3 screenPos)
     {
-        // 不需要
     }
 
     public bool GestureCompleted(
@@ -102,13 +114,13 @@ public class StickGestureListener : MonoBehaviour, KinectGestures.GestureListene
 
         if (gesture == KinectGestures.Gestures.RaiseRightHand)
         {
-            GrabStick(userId, true);
+            GrabStick(true);
             return true;
         }
 
         if (gesture == KinectGestures.Gestures.RaiseLeftHand)
         {
-            GrabStick(userId, false);
+            GrabStick(false);
             return true;
         }
 
@@ -123,20 +135,25 @@ public class StickGestureListener : MonoBehaviour, KinectGestures.GestureListene
         return userIndex == playerIndex;
     }
 
-    private void GrabStick(long userId, bool right)
+    private void GrabStick(bool right)
     {
-        trackedUserId = userId;
         useRightHand = right;
 
         if (right)
         {
-            trackedHandJoint = KinectInterop.JointType.HandRight;
-            trackedElbowJoint = KinectInterop.JointType.ElbowRight;
+            currentHandBone = rightHandBone;
+            currentElbowBone = rightElbowBone;
         }
         else
         {
-            trackedHandJoint = KinectInterop.JointType.HandLeft;
-            trackedElbowJoint = KinectInterop.JointType.ElbowLeft;
+            currentHandBone = leftHandBone;
+            currentElbowBone = leftElbowBone;
+        }
+
+        if (currentHandBone == null)
+        {
+            Debug.LogError("手部骨骼未设置！请在 Inspector 里拖入 Avatar 的手部 Transform。");
+            return;
         }
 
         hasStick = true;
@@ -149,33 +166,21 @@ public class StickGestureListener : MonoBehaviour, KinectGestures.GestureListene
 
     private void FixedUpdate()
     {
-        if (!hasStick || stickRootObject == null)
+        if (!hasStick || stickRootObject == null || currentHandBone == null)
             return;
 
-        KinectManager kinectManager = KinectManager.Instance;
-        if (kinectManager == null || trackedUserId == 0)
-            return;
-
-        int handIndex = (int)trackedHandJoint;
-        int elbowIndex = (int)trackedElbowJoint;
-
-        if (!kinectManager.IsJointTracked(trackedUserId, handIndex))
-            return;
-
-        Vector3 handPos = kinectManager.GetJointPosition(trackedUserId, handIndex);
+        Vector3 handPos = currentHandBone.position;
 
         // 计算目标旋转
         Quaternion targetRot = stickRootObject.transform.rotation;
 
-        if (followArmDirection &&
-            kinectManager.IsJointTracked(trackedUserId, elbowIndex))
+        if (followArmDirection && currentElbowBone != null)
         {
-            Vector3 elbowPos = kinectManager.GetJointPosition(trackedUserId, elbowIndex);
+            Vector3 elbowPos = currentElbowBone.position;
             Vector3 forearmDir = handPos - elbowPos;
 
             if (forearmDir.magnitude > minArmLength)
             {
-                // 把棍子的本地轴对齐到小臂方向
                 targetRot = Quaternion.FromToRotation(stickLocalUpAxis, forearmDir.normalized);
                 targetRot *= Quaternion.Euler(extraRotationEuler);
             }
@@ -185,7 +190,7 @@ public class StickGestureListener : MonoBehaviour, KinectGestures.GestureListene
             targetRot = Quaternion.Euler(extraRotationEuler);
         }
 
-        // 握点偏移（让棍子握把正好在手上，不是棍子中心在手上）
+        // 握点偏移
         Vector3 worldOffset = targetRot * gripOffset;
         Vector3 targetPos = handPos - worldOffset;
 
@@ -209,6 +214,34 @@ public class StickGestureListener : MonoBehaviour, KinectGestures.GestureListene
             stickRootObject.transform.rotation = Quaternion.Slerp(
                 stickRootObject.transform.rotation, targetRot,
                 rotateSpeed * Time.fixedDeltaTime);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!hasStick || currentHandBone == null)
+            return;
+
+        // 画手部位置
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(currentHandBone.position, 0.03f);
+
+        // 画棍子原点
+        if (stickRootObject != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(stickRootObject.transform.position, 0.03f);
+
+            // 画连线
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(currentHandBone.position, stickRootObject.transform.position);
+        }
+
+        // 画小臂方向
+        if (followArmDirection && currentElbowBone != null)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(currentElbowBone.position, currentHandBone.position);
         }
     }
 }
