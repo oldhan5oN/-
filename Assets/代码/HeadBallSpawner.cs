@@ -3,6 +3,9 @@ using UnityEngine.InputSystem;
 
 public class HeadBallSpawner : MonoBehaviour
 {
+    public LayerMask groundMask;
+    public float checkRadius=0.5f;
+    public bool isGrounded=true;
     [Header("球设置")]
     public GameObject ballPrefab; // 球预制体
     public Transform head; // 头部对象
@@ -46,6 +49,7 @@ public class HeadBallSpawner : MonoBehaviour
 
     private void Update()
     {
+        Grounded();
         if (spawnAction.WasPressedThisFrame())
         {
             SpawnBall();
@@ -59,7 +63,16 @@ public class HeadBallSpawner : MonoBehaviour
             DestroyBall();
         }
     }
-
+    private void Grounded(){
+        if (currentBall == null)
+    {
+        isGrounded = true;  // 没有球，视为可以生成
+        return;
+    }
+        Vector3 checkPos=currentBall.transform.position;
+        Debug.Log("grounnded");
+        isGrounded= Physics.CheckSphere(checkPos, checkRadius, groundMask);
+    }
     public void SpawnBall()
     {
         if (ballPrefab == null)
@@ -72,7 +85,10 @@ public class HeadBallSpawner : MonoBehaviour
             Debug.LogError("HeadBallSpawner: 没有设置头部对象！");
             return;
         }
-
+        if(isGrounded==false){
+            Debug.LogError("HeadBallSpawner: 球未落地！");
+            return;
+        }
         DestroyBall();
         initialPos = head.position + Vector3.up * height;
         Quaternion spawn=Quaternion.Euler(0,180,0);
