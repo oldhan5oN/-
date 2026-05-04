@@ -20,6 +20,7 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 	private bool progressDisplayed;
 	private float progressGestureTime;
 
+	public HeadBallSpawner spawner;
 
     // invoked when a new user is detected
     public void UserDetected(long userId, int userIndex)
@@ -115,6 +116,15 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
 
 		string sGestureText = gesture + " detected";
         Debug.Log(sGestureText);
+
+        switch (gesture)
+        {
+            case KinectGestures.Gestures.Tpose:
+                Debug.Log("Tpose 检测到！");
+                if (spawner != null)
+                    spawner.SpawnBall();
+                break;
+        }
 
         if (gestureInfo != null)
 		{
