@@ -134,7 +134,7 @@ MonoBehaviour:
     m_Value: 0.3
   contrast:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: -15
   colorFilter:
     m_OverrideState: 0
     m_Value: {r: 0.8549928, g: 0.8549928, b: 0.8549928, a: 1}
@@ -143,7 +143,7 @@ MonoBehaviour:
     m_Value: 0
   saturation:
     m_OverrideState: 1
-    m_Value: 9
+    m_Value: -4
 --- !u!114 &-2465726935807271590
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.ChromaticAberration
   active: 0
   intensity:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
 --- !u!114 &11400000
 MonoBehaviour:
@@ -225,10 +225,10 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: 15
+    m_Value: -20
   tint:
     m_OverrideState: 1
-    m_Value: 20
+    m_Value: 7
 --- !u!114 &5684735028767412436
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -439,19 +439,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DepthOfField
-  active: 0
+  active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 16.9
+    m_Value: 0
   gaussianEnd:
     m_OverrideState: 1
-    m_Value: 31.7
+    m_Value: 37.97
   gaussianMaxRadius:
     m_OverrideState: 1
-    m_Value: 0.949
+    m_Value: 1.137
   highQualitySampling:
     m_OverrideState: 1
     m_Value: 0
@@ -460,7 +460,7 @@ MonoBehaviour:
     m_Value: 33.1
   aperture:
     m_OverrideState: 1
-    m_Value: 6.8
+    m_Value: 8.2
   focalLength:
     m_OverrideState: 0
     m_Value: 1
@@ -491,7 +491,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.027
   response:
     m_OverrideState: 1
     m_Value: 0.917
