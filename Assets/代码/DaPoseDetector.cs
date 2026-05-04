@@ -114,6 +114,6 @@ public class DaPoseDetector : MonoBehaviour
             leftHand.x < leftShoulder.x &&
             rightHand.x > rightShoulder.x;
 
-        return handsOpen && handsNearShoulderHeight && legsOpen && handsOnCorrectSide;
+        return handsOpen && handsNearShoulderHeight && handsOnCorrectSide;
     }
 }

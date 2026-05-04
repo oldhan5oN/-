@@ -75,6 +75,7 @@ public class HeadBallSpawner : MonoBehaviour
     }
     public void SpawnBall()
     {
+        Grounded();
         if (ballPrefab == null)
         {
             Debug.LogError("HeadBallSpawner: 没有设置球预制体！");
