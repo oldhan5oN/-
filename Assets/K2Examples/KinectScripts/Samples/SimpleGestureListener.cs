@@ -124,6 +124,9 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
                 if (spawner != null)
                     spawner.SpawnBall();
                 break;
+            case KinectGestures.Gestures.SwipeLeft:
+                Debug.Log("SWIPE");
+                break;
         }
 
         if (gestureInfo != null)
