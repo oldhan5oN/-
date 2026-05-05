@@ -1,247 +1,488 @@
 using UnityEngine;
 
-public class StickGestureListener : MonoBehaviour, KinectGestures.GestureListenerInterface
+public class PlateJugglingController : MonoBehaviour
 {
-    [Header("Player")]
-    public int playerIndex = 0;
+    public enum PlateState
+    {
+        Hidden,
+        FallingOntoStick,
+        HangingOnEdge,
+        SpinningUp,
+        StableSpinning,
+        FallingOff
+    }
 
-    [Header("Avatar Bones")]
-    [Tooltip("Avatar 的右手骨骼（从 Hierarchy 里拖）")]
-    public Transform rightHandBone;
-
-    [Tooltip("Avatar 的左手骨骼（从 Hierarchy 里拖）")]
-    public Transform leftHandBone;
-
-    [Tooltip("Avatar 的右手肘骨骼（用于计算小臂方向）")]
-    public Transform rightElbowBone;
-
-    [Tooltip("Avatar 的左手肘骨骼")]
-    public Transform leftElbowBone;
-
-    [Header("Stick")]
-    public GameObject stickRootObject;
+    [Header("References")]
+    public Transform stickRoot;
+    public Transform stickTip;
     public Rigidbody stickRb;
 
-    [Tooltip("棍子相对手掌的位置偏移")]
-    public Vector3 gripOffset = new Vector3(0f, -0.1f, 0f);
+    public Rigidbody plateRb;
+    public ConfigurableJoint joint;
 
-    [Tooltip("棍子模型默认朝向的本地轴")]
-    public Vector3 stickLocalUpAxis = Vector3.up;
+    [Header("Plate Settings")]
+    public float plateRadius = 0.25f;
 
-    [Tooltip("额外旋转微调")]
-    public Vector3 extraRotationEuler = Vector3.zero;
+    [Tooltip("盘子自转轴。大多数平放在 XZ 平面的盘子用 Y 轴。")]
+    public Vector3 localSpinAxis = Vector3.up;
 
-    [Header("Follow")]
-    public float followSpeed = 20f;
-    public float rotateSpeed = 15f;
+    [Header("Spawn / Catch")]
+    public float spawnHeight = 1.5f;
+    public float catchDistance = 0.25f;
+    public float minStickUprightDot = 0.65f;
 
-    [Header("Arm Direction")]
-    [Tooltip("是否用小臂方向旋转棍子")]
-    public bool followArmDirection = true;
+    [Header("Spin")]
+    public float spinSpeed;
+    public float maxSpinSpeed = 1200f;
+    public float spinAcceleration = 800f;
+    public float spinDecay = 120f;
 
-    [Tooltip("小臂方向过短时不更新旋转")]
-    public float minArmLength = 0.05f;
+    [Header("Stability")]
+    [Range(0f, 1f)]
+    public float stability;
+
+    public float stabilityGain = 0.7f;
+    public float stabilityLoss = 0.35f;
+    public float uprightTorque = 20f;
+
+    [Header("Joint")]
+    public float linearLimit = 0.15f;
+    public float jointPositionSpring = 250f;
+    public float jointPositionDamper = 25f;
+
+    [Header("Angular Limit")]
+    public float angularXLowLimit = -60f;
+    public float angularXHighLimit = 60f;
+    public float angularZLimit = 177f;
+
+    [Header("Fall")]
+    public float fallDelay = 0.4f;
+
+    [Header("Reset Settings")]
+    [Tooltip("盘子掉落后是否自动复位")]
+    public bool autoReset = true;
+
+    [Tooltip("掉落后多久自动复位（秒）")]
+    public float resetDelay = 2f;
+
+    [Tooltip("复位时盘子的高度阈值（低于这个高度视为掉地上了）")]
+    public float groundThreshold = -1f;
 
     [Header("Debug")]
-    public bool hasStick = false;
-    public bool useRightHand = true;
+    [Range(0f, 1f)]
+    public float debugShakeAmount = 0f;
 
-    private long trackedUserId = 0;
-    private Transform currentHandBone;
-    private Transform currentElbowBone;
+    public PlateState state = PlateState.Hidden;
 
-    private void Start()
+    private float unstableTimer;
+    private Vector3 edgeAnchor;
+    private Vector3 centerAnchor;
+
+    // 复位相关
+    private float fallTimer;
+    private bool hasFallen;
+
+    private void Awake()
     {
-        if (stickRootObject != null)
-            stickRootObject.SetActive(false);
+        if (plateRb == null)
+            plateRb = GetComponent<Rigidbody>();
 
-        if (stickRb == null && stickRootObject != null)
-            stickRb = stickRootObject.GetComponent<Rigidbody>();
-    }
+        if (joint == null)
+            joint = GetComponent<ConfigurableJoint>();
 
-    public void UserDetected(long userId, int userIndex)
-    {
-        if (userIndex != playerIndex)
-            return;
+        edgeAnchor = new Vector3(plateRadius, 0f, 0f);
+        centerAnchor = Vector3.zero;
 
-        trackedUserId = userId;
+        SetupJointBaseParams();
+        DeactivateJointConstraint();
+        HidePlateAtStart();
 
-        KinectManager kinectManager = KinectManager.Instance;
-        if (kinectManager != null)
-        {
-            kinectManager.DetectGesture(userId, KinectGestures.Gestures.RaiseRightHand);
-            kinectManager.DetectGesture(userId, KinectGestures.Gestures.RaiseLeftHand);
-        }
-
-        Debug.Log("玩家进入，开始监听举手。");
-    }
-
-    public void UserLost(long userId, int userIndex)
-    {
-        if (userIndex != playerIndex)
-            return;
-
-        trackedUserId = 0;
-        hasStick = false;
-
-        if (stickRootObject != null)
-            stickRootObject.SetActive(false);
-
-        Debug.Log("玩家丢失，棍子收回。");
-    }
-
-    public void GestureInProgress(
-        long userId, int userIndex,
-        KinectGestures.Gestures gesture,
-        float progress,
-        KinectInterop.JointType joint,
-        Vector3 screenPos)
-    {
-    }
-
-    public bool GestureCompleted(
-        long userId, int userIndex,
-        KinectGestures.Gestures gesture,
-        KinectInterop.JointType joint,
-        Vector3 screenPos)
-    {
-        if (userIndex != playerIndex)
-            return false;
-
-        // 已经拿到棍子了，就不再切换
-        if (hasStick)
-            return true;
-
-        if (gesture == KinectGestures.Gestures.RaiseRightHand)
-        {
-            GrabStick(true);
-            return true;
-        }
-
-        if (gesture == KinectGestures.Gestures.RaiseLeftHand)
-        {
-            GrabStick(false);
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool GestureCancelled(
-        long userId, int userIndex,
-        KinectGestures.Gestures gesture,
-        KinectInterop.JointType joint)
-    {
-        return userIndex == playerIndex;
-    }
-
-    private void GrabStick(bool right)
-    {
-        useRightHand = right;
-
-        if (right)
-        {
-            currentHandBone = rightHandBone;
-            currentElbowBone = rightElbowBone;
-        }
-        else
-        {
-            currentHandBone = leftHandBone;
-            currentElbowBone = leftElbowBone;
-        }
-
-        if (currentHandBone == null)
-        {
-            Debug.LogError("手部骨骼未设置！请在 Inspector 里拖入 Avatar 的手部 Transform。");
-            return;
-        }
-
-        hasStick = true;
-
-        if (stickRootObject != null)
-            stickRootObject.SetActive(true);
-
-        Debug.Log("棍子出现，跟随：" + (right ? "右手" : "左手"));
+        Debug.Log("初始化完成");
+        Debug.Log("当前状态：" + state);
     }
 
     private void FixedUpdate()
     {
-        if (!hasStick || stickRootObject == null || currentHandBone == null)
+        switch (state)
+        {
+            case PlateState.Hidden:
+                break;
+
+            case PlateState.FallingOntoStick:
+                UpdateFallingOntoStick();
+                break;
+
+            case PlateState.HangingOnEdge:
+            case PlateState.SpinningUp:
+            case PlateState.StableSpinning:
+                UpdatePlateOnStick();
+                break;
+
+            case PlateState.FallingOff:
+                UpdateFallingOff();
+                break;
+        }
+    }
+
+    private void Update()
+    {
+        // 快捷键：按 R 键复位
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ResetPlate();
+        }
+
+        // 快捷键：按 Space 键生成盘子
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SpawnPlateAboveStick();
+        }
+    }
+
+    private void SetupJointBaseParams()
+    {
+        if (joint == null)
+        {
+            Debug.LogWarning("盘子上没有 ConfigurableJoint。");
+            return;
+        }
+
+        joint.autoConfigureConnectedAnchor = false;
+
+        SoftJointLimit limit = new SoftJointLimit();
+        limit.limit = linearLimit;
+
+        joint.linearLimit = limit;
+    }
+
+    private void DeactivateJointConstraint()
+    {
+        if (joint == null)
             return;
 
-        Vector3 handPos = currentHandBone.position;
+        joint.connectedBody = null;
 
-        // 计算目标旋转
-        Quaternion targetRot = stickRootObject.transform.rotation;
+        joint.xMotion = ConfigurableJointMotion.Free;
+        joint.yMotion = ConfigurableJointMotion.Free;
+        joint.zMotion = ConfigurableJointMotion.Free;
 
-        if (followArmDirection && currentElbowBone != null)
+        joint.angularXMotion = ConfigurableJointMotion.Free;
+        joint.angularYMotion = ConfigurableJointMotion.Free;
+        joint.angularZMotion = ConfigurableJointMotion.Free;
+
+        joint.breakForce = Mathf.Infinity;
+        joint.breakTorque = Mathf.Infinity;
+    }
+
+    private void ActivateJointConstraint()
+    {
+        if (joint == null)
+            return;
+
+        joint.connectedBody = stickRb;
+
+        joint.anchor = Vector3.zero;
+        joint.connectedAnchor = stickRoot.InverseTransformPoint(stickTip.position);
+
+        joint.xMotion = ConfigurableJointMotion.Limited;
+        joint.yMotion = ConfigurableJointMotion.Limited;
+        joint.zMotion = ConfigurableJointMotion.Locked;
+
+        joint.angularXMotion = ConfigurableJointMotion.Limited;
+        joint.angularYMotion = ConfigurableJointMotion.Limited;
+        joint.angularZMotion = ConfigurableJointMotion.Limited;
+
+        joint.breakForce = Mathf.Infinity;
+        joint.breakTorque = Mathf.Infinity;
+    }
+
+    private void HidePlateAtStart()
+    {
+        state = PlateState.Hidden;
+
+        DeactivateJointConstraint();
+
+        if (plateRb != null)
         {
-            Vector3 elbowPos = currentElbowBone.position;
-            Vector3 forearmDir = handPos - elbowPos;
+            plateRb.linearVelocity = Vector3.zero;
+            plateRb.angularVelocity = Vector3.zero;
+            plateRb.useGravity = false;
+            plateRb.isKinematic = true;
+        }
 
-            if (forearmDir.magnitude > minArmLength)
+        gameObject.SetActive(false);
+
+        hasFallen = false;
+        fallTimer = 0f;
+    }
+
+    public void SpawnPlateAboveStick()
+    {
+        if (stickTip == null || plateRb == null)
+        {
+            Debug.LogWarning("缺少 stickTip 或 plateRb 引用。");
+            return;
+        }
+
+        gameObject.SetActive(true);
+
+        DeactivateJointConstraint();
+
+        transform.position = stickTip.position + Vector3.up * spawnHeight;
+        transform.rotation = Quaternion.Euler(-90f, 0f, 0);
+
+        plateRb.linearVelocity = Vector3.zero;
+        plateRb.angularVelocity = Vector3.zero;
+        plateRb.isKinematic = false;
+        plateRb.useGravity = true;
+
+        spinSpeed = 0f;
+        stability = 0f;
+        unstableTimer = 0f;
+
+        hasFallen = false;
+        fallTimer = 0f;
+
+        state = PlateState.FallingOntoStick;
+
+        Debug.Log("盘子从上方掉下。");
+    }
+
+    public void UpdateFallingOntoStick()
+    {
+        if (!IsStickUpright())
+            return;
+
+        transform.position = new Vector3(stickTip.position.x, transform.position.y, stickTip.position.z);
+
+        float distanceToTip = Vector3.Distance(transform.position, stickTip.position);
+
+        if (distanceToTip <= catchDistance)
+        {
+            AttachToStickEdge();
+        }
+    }
+
+    private void AttachToStickEdge()
+    {
+        if (joint == null || stickRb == null || stickRoot == null || stickTip == null)
+        {
+            Debug.LogWarning("Joint / StickRb / StickRoot / StickTip 引用不完整。");
+            return;
+        }
+
+        edgeAnchor = new Vector3(0f, 0f, 0f);
+
+        ActivateJointConstraint();
+
+        plateRb.isKinematic = false;
+        plateRb.useGravity = true;
+
+        state = PlateState.HangingOnEdge;
+
+        Debug.Log("盘子挂到杆子边缘。");
+    }
+
+    private void UpdatePlateOnStick()
+    {
+        float shakeAmount = GetShakeAmount();
+
+        if (!IsStickUpright())
+        {
+            unstableTimer += Time.fixedDeltaTime;
+
+            stability -= stabilityLoss * 2f * Time.fixedDeltaTime;
+            spinSpeed -= spinDecay * 2f * Time.fixedDeltaTime;
+
+            if (unstableTimer >= fallDelay)
             {
-                targetRot = Quaternion.FromToRotation(stickLocalUpAxis, forearmDir.normalized);
-                targetRot *= Quaternion.Euler(extraRotationEuler);
+                DetachPlate();
+                return;
             }
         }
         else
         {
-            targetRot = Quaternion.Euler(extraRotationEuler);
+            unstableTimer = 0f;
         }
 
-        // 握点偏移
-        Vector3 worldOffset = targetRot * gripOffset;
-        Vector3 targetPos = handPos - worldOffset;
-
-        // 平滑跟随
-        if (stickRb != null && stickRb.isKinematic)
+        if (shakeAmount > 0.2f)
         {
-            Vector3 newPos = Vector3.Lerp(stickRb.position, targetPos,
-                followSpeed * Time.fixedDeltaTime);
-            Quaternion newRot = Quaternion.Slerp(stickRb.rotation, targetRot,
-                rotateSpeed * Time.fixedDeltaTime);
-
-            stickRb.MovePosition(newPos);
-            stickRb.MoveRotation(newRot);
+            spinSpeed += spinAcceleration * shakeAmount * Time.fixedDeltaTime;
+            stability += stabilityGain * shakeAmount * Time.fixedDeltaTime;
         }
         else
         {
-            stickRootObject.transform.position = Vector3.Lerp(
-                stickRootObject.transform.position, targetPos,
-                followSpeed * Time.fixedDeltaTime);
+            spinSpeed -= spinDecay * Time.fixedDeltaTime;
+            stability -= stabilityLoss * Time.fixedDeltaTime;
+        }
 
-            stickRootObject.transform.rotation = Quaternion.Slerp(
-                stickRootObject.transform.rotation, targetRot,
-                rotateSpeed * Time.fixedDeltaTime);
+        spinSpeed = Mathf.Clamp(spinSpeed, 0f, maxSpinSpeed);
+        stability = Mathf.Clamp01(stability);
+
+        UpdateJointAnchor();
+        ApplySpinTorque();
+        ApplyUprightAssist();
+
+        if (stability > 0.8f)
+        {
+            state = PlateState.StableSpinning;
+        }
+        else if (spinSpeed > 100f)
+        {
+            state = PlateState.SpinningUp;
+        }
+        else
+        {
+            state = PlateState.HangingOnEdge;
         }
     }
 
-    private void OnDrawGizmos()
+    /// <summary>
+    /// 更新掉落状态 - 检测盘子是否落地，触发自动复位
+    /// </summary>
+    private void UpdateFallingOff()
     {
-        if (!hasStick || currentHandBone == null)
+        if (hasFallen)
             return;
 
-        // 画手部位置
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(currentHandBone.position, 0.03f);
-
-        // 画棍子原点
-        if (stickRootObject != null)
+        // 检测盘子是否掉到地面以下
+        if (transform.position.y < groundThreshold)
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(stickRootObject.transform.position, 0.03f);
+            hasFallen = true;
+            fallTimer = 0f;
 
-            // 画连线
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(currentHandBone.position, stickRootObject.transform.position);
+            Debug.Log("盘子落地。");
+
+            if (autoReset)
+            {
+                Debug.Log($"将在 {resetDelay} 秒后自动复位。");
+            }
         }
 
-        // 画小臂方向
-        if (followArmDirection && currentElbowBone != null)
+        // 自动复位计时
+        if (hasFallen && autoReset)
         {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(currentElbowBone.position, currentHandBone.position);
+            fallTimer += Time.fixedDeltaTime;
+
+            if (fallTimer >= resetDelay)
+            {
+                ResetPlate();
+            }
         }
+    }
+
+    private float GetShakeAmount()
+    {
+        return debugShakeAmount;
+    }
+
+    public void SetShakeAmount(float amount)
+    {
+        debugShakeAmount = Mathf.Clamp01(amount);
+    }
+
+    private void UpdateJointAnchor1()
+    {
+        if (joint == null)
+            return;
+
+        if (joint.connectedBody == null)
+            return;
+
+        edgeAnchor = new Vector3(0f, 0f, 0f);
+
+        joint.anchor = edgeAnchor;
+        joint.connectedAnchor = stickRoot.InverseTransformPoint(stickTip.position);
+    }
+
+    private void ApplySpinTorque()
+    {
+        if (plateRb == null)
+            return;
+
+        Vector3 worldSpinAxis = transform.TransformDirection(localSpinAxis.normalized);
+
+        float currentSpinDegrees =
+            Vector3.Dot(plateRb.angularVelocity, worldSpinAxis) * Mathf.Rad2Deg;
+
+        float spinError = spinSpeed - currentSpinDegrees;
+
+        plateRb.AddTorque(
+            worldSpinAxis * spinError * 0.02f,
+            ForceMode.Acceleration
+        );
+    }
+
+    private void ApplyUprightAssist()
+    {
+        if (plateRb == null)
+            return;
+
+        if (stability <= 0f)
+            return;
+
+        Vector3 plateUp = transform.forward;
+        Vector3 targetUp = stickTip.up;
+
+        Vector3 correctionAxis = Vector3.Cross(plateUp, targetUp);
+
+        plateRb.AddTorque(
+            correctionAxis * uprightTorque * stability,
+            ForceMode.Acceleration
+        );
+    }
+
+    public bool IsStickUpright()
+    {
+        if (stickTip == null)
+            return false;
+
+        float upright = Vector3.Dot(stickTip.up, Vector3.up);
+        return upright >= minStickUprightDot;
+    }
+
+    public void DetachPlate()
+    {
+        Debug.Log("盘子掉落。");
+
+        DeactivateJointConstraint();
+
+        if (plateRb != null)
+        {
+            plateRb.isKinematic = false;
+            plateRb.useGravity = true;
+        }
+
+        state = PlateState.FallingOff;
+    }
+
+    /// <summary>
+    /// 复位盘子 - 将盘子恢复到初始隐藏状态
+    /// </summary>
+    public void ResetPlate()
+    {
+        Debug.Log("复位盘子。");
+
+        HidePlateAtStart();
+    }
+
+    // ========== Inspector 右键菜单 ==========
+
+    [ContextMenu("生成盘子 (Space)")]
+    private void DebugSpawnPlateAboveStick()
+    {
+        SpawnPlateAboveStick();
+    }
+
+    [ContextMenu("分离盘子")]
+    private void DebugDetachPlate1()
+    {
+        DetachPlate();
+    }
+
+    [ContextMenu("复位盘子 (R)")]
+    private void DebugResetPlate()
+    {
+        ResetPlate();
     }
 }
