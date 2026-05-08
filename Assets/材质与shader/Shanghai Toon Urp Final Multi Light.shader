@@ -1,4 +1,4 @@
-Shader "Custom/ShanghaiToonURP_Final"
+Shader "Custom/ShanghaiToonURP_Final_MultiLight"
 {
     Properties
     {
@@ -28,6 +28,11 @@ Shader "Custom/ShanghaiToonURP_Final"
         _SunPitch ("Sun Pitch (vertical degrees)",   Range(-90, 90)) = 25
         _SunFollowsView ("Sun Follows Camera Yaw 0 Off 1 On", Range(0, 1)) = 1
         _SunWrap ("Sun Wrap (soft fill)", Range(0, 1)) = 0.35
+
+        [Header(_____ 2b ADDITIONAL LIGHTS _____)]
+        _AdditionalLightStrength ("Additional Light Strength", Range(0, 4)) = 1.25
+        _AdditionalLightToonSoftness ("Additional Light Toon Softness", Range(0.001, 0.8)) = 0.28
+        _AdditionalLightColorInfluence ("Additional Light Color Influence", Range(0, 1)) = 1.0
 
         // ============================================================
         // 3. CONTRAST GRADIENT MAP
@@ -95,7 +100,7 @@ Shader "Custom/ShanghaiToonURP_Final"
         _ClothHalftoneScale ("Cloth Halftone Scale", Range(20, 400)) = 140
 
         // ============================================================
-        // 8. INK WASH BRUSH (replaces paper grain)
+        // 8. INK WASH BRUSH
         // ============================================================
         [Header(_____ 8 INK WASH BRUSH _____)]
         _InkWashStrength ("Ink Wash Strength", Range(0, 1)) = 0.6
@@ -106,7 +111,7 @@ Shader "Custom/ShanghaiToonURP_Final"
         _InkBleedAmount ("Ink Edge Bleed", Range(0, 1)) = 0.5
 
         // ============================================================
-        // 9. SHANGHAI 1980 PALETTE  (Da Nao Tian Gong style)
+        // 9. SHANGHAI 1980 PALETTE
         // ============================================================
         [Header(_____ 9 SHANGHAI 1980 PALETTE _____)]
         _ShanghaiPaletteStrength ("Shanghai Palette Strength", Range(0, 1)) = 0.0
@@ -148,7 +153,6 @@ Shader "Custom/ShanghaiToonURP_Final"
             HLSLPROGRAM
             #pragma vertex OutlineVert
             #pragma fragment OutlineFrag
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
             CBUFFER_START(UnityPerMaterial)
@@ -167,6 +171,9 @@ Shader "Custom/ShanghaiToonURP_Final"
                 float  _SunPitch;
                 float  _SunFollowsView;
                 float  _SunWrap;
+                float  _AdditionalLightStrength;
+                float  _AdditionalLightToonSoftness;
+                float  _AdditionalLightColorInfluence;
                 float  _UseGradient;
                 float4 _GradientShadow;
                 float4 _GradientMid;
@@ -268,7 +275,8 @@ Shader "Custom/ShanghaiToonURP_Final"
 
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile _ _SHADOWS_SOFT
-            #pragma multi_compile _ _ADDITIONAL_LIGHTS _ADDITIONAL_LIGHTS_VERTEX
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile_fog
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -291,6 +299,9 @@ Shader "Custom/ShanghaiToonURP_Final"
                 float  _SunPitch;
                 float  _SunFollowsView;
                 float  _SunWrap;
+                float  _AdditionalLightStrength;
+                float  _AdditionalLightToonSoftness;
+                float  _AdditionalLightColorInfluence;
                 float  _UseGradient;
                 float4 _GradientShadow;
                 float4 _GradientMid;
@@ -367,13 +378,13 @@ Shader "Custom/ShanghaiToonURP_Final"
                 float  fogCoord    : TEXCOORD4;
             };
 
-            // ---------- noise (ink wash) ----------
             float hash21(float2 p)
             {
                 p = frac(p * float2(443.897, 441.423));
                 p += dot(p, p.yx + 19.19);
                 return frac((p.x + p.y) * p.x);
             }
+
             float vnoise(float2 p)
             {
                 float2 i = floor(p), f = frac(p);
@@ -385,7 +396,6 @@ Shader "Custom/ShanghaiToonURP_Final"
                 return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
             }
 
-            // FBM stretched along brush direction -> brush-stroke streaks
             float inkWashFBM(float2 uv, float dirRad)
             {
                 float c = cos(dirRad), s = sin(dirRad);
@@ -397,14 +407,13 @@ Shader "Custom/ShanghaiToonURP_Final"
                 for (int k = 0; k < 5; k++)
                 {
                     n += vnoise(stretched * freq) * amp;
-                    freq *= 2.07; amp *= 0.55;
+                    freq *= 2.07;
+                    amp *= 0.55;
                 }
-                // edge-bleed component
                 float bleed = vnoise(uv * 6.3 + 13.7);
                 return saturate(n * 0.7 + bleed * 0.3);
             }
 
-            // ---------- 3D rotation matrix from yaw/pitch ----------
             float3 SunDirectionWS()
             {
                 float yaw   = _SunYaw   * 0.01745329;
@@ -412,62 +421,73 @@ Shader "Custom/ShanghaiToonURP_Final"
 
                 if (_SunFollowsView > 0.5)
                 {
-                    // Add camera yaw so the sun stays at the same screen-side as the camera spins
-                    float3 camFwd = -UNITY_MATRIX_V[2].xyz; // view forward in world
+                    float3 camFwd = -UNITY_MATRIX_V[2].xyz;
                     float camYaw = atan2(camFwd.x, camFwd.z);
                     yaw += camYaw;
                 }
 
-                float cy = cos(yaw),   sy = sin(yaw);
+                float cy = cos(yaw), sy = sin(yaw);
                 float cp = cos(pitch), sp = sin(pitch);
-                // direction the sun shines TO; we negate when computing NdotL with surface normal
-                float3 dir = normalize(float3(sy * cp, sp, cy * cp));
-                return dir;
+                return normalize(float3(sy * cp, sp, cy * cp));
             }
 
-            // ---------- Three-tone cel ----------
-            float3 ThreeToneCel(float NdotL, float shadowAtten, float3 albedo, out float toneNorm)
+            float WrappedNdot(float ndotl)
             {
-                // Apply wrap (soft fill) so the terminator is more natural than a flat 0.5
-                float wrapped = (NdotL + _SunWrap) / (1.0 + _SunWrap);
-                wrapped = saturate(wrapped) * 2.0 - 1.0;
+                float wrapped = (ndotl + _SunWrap) / (1.0 + _SunWrap);
+                return saturate(wrapped) * 2.0 - 1.0;
+            }
 
-                float litMid   = smoothstep(_ThresholdShadow - _ToneSmooth,
-                                            _ThresholdShadow + _ToneSmooth, wrapped);
-                float litLight = smoothstep(_ThresholdLight  - _ToneSmooth,
-                                            _ThresholdLight  + _ToneSmooth, wrapped);
-                litMid   *= shadowAtten;
-                litLight *= shadowAtten;
+            float3 ToneColorFromWrapped(float wrapped, float atten, out float toneNorm)
+            {
+                float litMid = smoothstep(_ThresholdShadow - _ToneSmooth,
+                                          _ThresholdShadow + _ToneSmooth, wrapped);
+                float litLight = smoothstep(_ThresholdLight - _ToneSmooth,
+                                            _ThresholdLight + _ToneSmooth, wrapped);
 
-                float3 c = lerp(_ShadowColor.rgb, _MidColor.rgb,  litMid);
-                c = lerp(c, _LightColor.rgb, litLight);
+                litMid *= atten;
+                litLight *= atten;
 
-                float3 base = albedo * c;
-                float3 plain = albedo;
+                float3 tone = lerp(_ShadowColor.rgb, _MidColor.rgb, litMid);
+                tone = lerp(tone, _LightColor.rgb, litLight);
                 toneNorm = saturate(litMid * 0.5 + litLight * 0.5);
-                return lerp(plain, base, _ToneStrength);
+                return tone;
+            }
+
+            float3 ThreeToneCel(float ndotl, float atten, float3 albedo, out float toneNorm)
+            {
+                float wrapped = WrappedNdot(ndotl);
+                float3 tone = ToneColorFromWrapped(wrapped, atten, toneNorm);
+                float3 base = albedo * tone;
+                return lerp(albedo, base, _ToneStrength);
+            }
+
+            float AdditionalLightLit(float ndotl)
+            {
+                float wrapped = WrappedNdot(ndotl);
+                float soft = max(_AdditionalLightToonSoftness, 0.001);
+                return smoothstep(_ThresholdShadow - soft, _ThresholdLight + soft, wrapped);
             }
 
             Varyings Vert(Attributes IN)
             {
                 Varyings OUT;
                 VertexPositionInputs vInput = GetVertexPositionInputs(IN.positionOS.xyz);
-                VertexNormalInputs   nInput = GetVertexNormalInputs(IN.normalOS);
-                OUT.positionCS  = vInput.positionCS;
-                OUT.positionWS  = vInput.positionWS;
-                OUT.normalWS    = nInput.normalWS;
-                OUT.uv          = TRANSFORM_TEX(IN.uv, _BaseMap);
+                VertexNormalInputs nInput = GetVertexNormalInputs(IN.normalOS);
+                OUT.positionCS = vInput.positionCS;
+                OUT.positionWS = vInput.positionWS;
+                OUT.normalWS = nInput.normalWS;
+                OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
                 OUT.shadowCoord = GetShadowCoord(vInput);
-                OUT.fogCoord    = ComputeFogFactor(vInput.positionCS.z);
+                OUT.fogCoord = ComputeFogFactor(vInput.positionCS.z);
                 return OUT;
             }
 
             half4 Frag(Varyings IN) : SV_Target
             {
                 float3 N = normalize(IN.normalWS);
+                float3 V = normalize(GetWorldSpaceViewDir(IN.positionWS));
                 Light mainLight = GetMainLight(IN.shadowCoord);
 
-                // ---- Light direction: virtual sun OR scene main light ----
                 float3 L;
                 if (_UseVirtualSun > 0.5)
                     L = SunDirectionWS();
@@ -477,26 +497,61 @@ Shader "Custom/ShanghaiToonURP_Final"
                 float NdotL = dot(N, L);
                 float shadowAtten = mainLight.shadowAttenuation;
 
-                // ---- Albedo ----
                 half4 baseTex = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv);
                 float3 albedo = baseTex.rgb * _BaseColor.rgb;
 
                 // ============================================================
-                // 2. THREE TONE CEL (rotatable sun, soft wrap)
+                // 2. MAIN THREE-TONE CEL
                 // ============================================================
                 float toneNorm;
                 float3 color = ThreeToneCel(NdotL, shadowAtten, albedo, toneNorm);
 
+                // This value drives later stylization: gradient, palette, halftone, ink.
+                // Additional lights are added into it so they participate in the whole look.
+                float styleLight = toneNorm;
+
+                // Colored light accumulation. Main light color always participates a little.
+                float3 lightColorInfluence = lerp(float3(1,1,1), mainLight.color.rgb, 0.5);
+                color *= lightColorInfluence;
+
                 // ============================================================
-                // 3. CONTRAST GRADIENT (3-stop: shadow / mid / highlight)
+                // ADDITIONAL LIGHTS - integrated into toon style
+                // ============================================================
+                #ifdef _ADDITIONAL_LIGHTS
+                int addLightsCount = GetAdditionalLightsCount();
+
+                for (int i = 0; i < addLightsCount; i++)
+                {
+                    Light addLight = GetAdditionalLight(i, IN.positionWS);
+                    float3 addL = normalize(addLight.direction);
+                    float addNdotL = dot(N, addL);
+
+                    float addLit = AdditionalLightLit(addNdotL);
+                    float addAtten = addLight.distanceAttenuation * addLight.shadowAttenuation;
+                    float addAmount = addLit * addAtten * _AdditionalLightStrength;
+
+                    // Extra lights use the same tone family instead of raw Lambert.
+                    float addToneNorm;
+                    float3 addTone = ToneColorFromWrapped(WrappedNdot(addNdotL), addAtten, addToneNorm);
+
+                    float3 addLightRGB = lerp(float3(1,1,1), addLight.color.rgb, _AdditionalLightColorInfluence);
+                    float3 addColor = albedo * addTone * addLightRGB * addAmount;
+
+                    color += addColor;
+                    styleLight = saturate(styleLight + addToneNorm * addAtten * 0.65 * _AdditionalLightStrength);
+                }
+                #endif
+
+                // ============================================================
+                // 3. CONTRAST GRADIENT
                 // ============================================================
                 if (_UseGradient > 0.5)
                 {
-                    float t = saturate(NdotL * 0.5 + 0.5) * shadowAtten;
+                    float t = saturate(styleLight);
                     t = saturate(pow(t, 1.0 / max(_GradientContrast, 0.01)));
                     float3 g = (t < 0.5)
-                        ? lerp(_GradientShadow.rgb, _GradientMid.rgb,       t * 2.0)
-                        : lerp(_GradientMid.rgb,    _GradientHighlight.rgb, (t - 0.5) * 2.0);
+                        ? lerp(_GradientShadow.rgb, _GradientMid.rgb, t * 2.0)
+                        : lerp(_GradientMid.rgb, _GradientHighlight.rgb, (t - 0.5) * 2.0);
                     color = lerp(color, albedo * g * 1.6, _GradientStrength);
                 }
 
@@ -505,38 +560,18 @@ Shader "Custom/ShanghaiToonURP_Final"
                 // ============================================================
                 if (_WarmCoolStrength > 0.001)
                 {
-                    float warmW = saturate(NdotL * 0.5 + 0.5);
+                    float warmW = saturate(styleLight);
                     float3 wc = lerp(_CoolTint.rgb, _WarmTint.rgb, warmW);
                     color = lerp(color, color * wc, _WarmCoolStrength);
                 }
-                color *= lerp(float3(1,1,1), mainLight.color.rgb, 0.5);
 
                 // ============================================================
-                // ADDITIONAL LIGHTS (point lights, spot lights, etc.)
-                // ============================================================
-                #ifdef _ADDITIONAL_LIGHTS
-                int addLightsCount = GetAdditionalLightsCount();
-                for (int i = 0; i < addLightsCount; i++)
-                {
-                    Light addLight = GetAdditionalLight(i, IN.positionWS);
-                    float3 addL = normalize(addLight.direction);
-                    float addNdotL = max(0, dot(N, addL));
-                    
-                    // 卡通风格的额外光源（简化版，不加阴影）
-                    float addLit = smoothstep(0.2, 0.3, addNdotL);
-                    float3 addColor = albedo * addLight.color * addLit * addLight.distanceAttenuation;
-                    color += addColor * 0.5;
-                }
-                #endif
-
-                // ============================================================
-                // 9. SHANGHAI 1980 PALETTE (multi-stop period palette, NOT mono yellow)
+                // 9. SHANGHAI 1980 PALETTE
                 // ============================================================
                 if (_ShanghaiPaletteStrength > 0.001)
                 {
-                    float t = saturate(NdotL * 0.5 + 0.5) * shadowAtten;
+                    float t = saturate(styleLight);
 
-                    // 4-stop palette: shadow -> midA (cinnabar) -> midB (mineral green) -> highlight (gold)
                     float3 pCol;
                     if (t < 0.33)
                         pCol = lerp(_PaletteShadow.rgb, _PaletteMidA.rgb, t / 0.33);
@@ -545,24 +580,20 @@ Shader "Custom/ShanghaiToonURP_Final"
                     else
                         pCol = lerp(_PaletteMidB.rgb, _PaletteHigh.rgb, (t - 0.66) / 0.34);
 
-                    // saturation boost
                     float lumaP = dot(pCol, float3(0.2126, 0.7152, 0.0722));
                     pCol = lumaP + (pCol - lumaP) * _PaletteSatBoost;
-
-                    // contrast around 0.5
                     pCol = saturate((pCol - 0.5) * _PaletteContrast + 0.5);
 
-                    // tint the original color, do not replace it -> keeps texture/shading detail
                     float3 tinted = color * pCol * 1.5;
                     color = lerp(color, tinted, _ShanghaiPaletteStrength);
                 }
 
                 // ============================================================
-                // 7. HALFTONE  (multiply blend, two textures, light-driven coverage)
+                // 7. HALFTONE - driven by combined main + additional light
                 // ============================================================
                 if (_HalftoneEnable > 0.5)
                 {
-                    float lightingNorm = saturate(NdotL * 0.5 + 0.5) * shadowAtten;
+                    float lightingNorm = saturate(styleLight);
 
                     float coverage;
                     if (lightingNorm < 0.5)
@@ -589,8 +620,6 @@ Shader "Custom/ShanghaiToonURP_Final"
                     float dotSkin  = 1.0 - smoothstep(thr - soft, thr + soft, skinPat);
                     float dotCloth = 1.0 - smoothstep(thr - soft, thr + soft, clothPat);
 
-                    // MULTIPLY blend: dot multiplies the underlying color by (1 - darken),
-                    // so dots are always the same hue family, just deeper.
                     float skinAlpha  = dotSkin  * _SkinHalftoneStrength  * skinMask         * _HalftoneOpacity;
                     float clothAlpha = dotCloth * _ClothHalftoneStrength * (1.0 - skinMask) * _HalftoneOpacity;
                     float totalAlpha = saturate(skinAlpha + clothAlpha);
@@ -600,26 +629,21 @@ Shader "Custom/ShanghaiToonURP_Final"
                 }
 
                 // ============================================================
-                // 8. INK WASH (replaces paper grain) - brush-streak multiply
+                // 8. INK WASH - also driven by combined light
                 // ============================================================
                 if (_InkWashStrength > 0.001)
                 {
                     float dirRad = _InkBrushDirection * 0.01745329;
                     float ink = inkWashFBM(IN.uv * _InkWashScale, dirRad);
 
-                    // shading luma drives darkening: dark areas get heavier wash
+                    float shadowMask = 1.0 - smoothstep(0.18, 0.78, styleLight);
                     float colLuma = dot(color, float3(0.2126, 0.7152, 0.0722));
-                    float shadowMask = 1.0 - smoothstep(0.15, 0.7, colLuma);
                     float lightFade = lerp(1.0, smoothstep(0.7, 0.95, colLuma), _InkWashLightFade);
 
-                    // ink amount: scale by strength * (more in shadows) * (less in highlights)
-                    float inkAmt = ink * _InkWashStrength * (0.4 + 0.9 * shadowMask) * lightFade;
-
-                    // wash color = same color, darker (multiply blend)
+                    float inkAmt = ink * _InkWashStrength * (0.35 + 0.95 * shadowMask) * lightFade;
                     float3 wash = color * (1.0 - _InkWashDarken);
                     color = lerp(color, wash, saturate(inkAmt));
 
-                    // edge bleed: a second softer streak that darkens contour transitions
                     if (_InkBleedAmount > 0.001)
                     {
                         float bleed = vnoise(IN.uv * _InkWashScale * 2.7 + 5.5);
@@ -633,7 +657,6 @@ Shader "Custom/ShanghaiToonURP_Final"
                 // ============================================================
                 if (_HaloEnable > 0.5 && _HaloStrength > 0.001)
                 {
-                    float3 V = normalize(GetWorldSpaceViewDir(IN.positionWS));
                     float NdotV = saturate(dot(N, V));
                     float fres = pow(1.0 - NdotV, _HaloPower);
                     float halo = smoothstep(1.0 - _HaloSoftness, 1.0, fres);
@@ -651,13 +674,9 @@ Shader "Custom/ShanghaiToonURP_Final"
                     color += _BackEmissionColor.rgb * backFactor * emissionMask * _BackEmissionStrength;
                 }
 
-                // ============================================================
-                // 1. OVERALL BRIGHTNESS
-                // ============================================================
                 color *= _OverallBrightness;
-
                 color = MixFog(color, IN.fogCoord);
-                return half4(saturate(color), 1.0);
+                return half4(saturate(color), baseTex.a * _BaseColor.a);
             }
             ENDHLSL
         }
@@ -687,9 +706,9 @@ Shader "Custom/ShanghaiToonURP_Final"
             Varyings ShadowVert(Attributes IN)
             {
                 Varyings OUT;
-                float3 posWS    = TransformObjectToWorld(IN.positionOS.xyz);
+                float3 posWS = TransformObjectToWorld(IN.positionOS.xyz);
                 float3 normalWS = TransformObjectToWorldNormal(IN.normalOS);
-                float4 posCS    = TransformWorldToHClip(ApplyShadowBias(posWS, normalWS, _LightDirection));
+                float4 posCS = TransformWorldToHClip(ApplyShadowBias(posWS, normalWS, _LightDirection));
             #if UNITY_REVERSED_Z
                 posCS.z = min(posCS.z, UNITY_NEAR_CLIP_VALUE);
             #else
@@ -698,6 +717,7 @@ Shader "Custom/ShanghaiToonURP_Final"
                 OUT.positionCS = posCS;
                 return OUT;
             }
+
             half4 ShadowFrag(Varyings IN) : SV_Target { return 0; }
             ENDHLSL
         }
@@ -726,10 +746,11 @@ Shader "Custom/ShanghaiToonURP_Final"
                 OUT.positionCS = TransformObjectToHClip(IN.positionOS.xyz);
                 return OUT;
             }
+
             half4 DepthFrag(Varyings IN) : SV_Target { return 0; }
             ENDHLSL
         }
     }
 
-    FallBack "Hide"
+    FallBack "Hidden/Universal Render Pipeline/FallbackError"
 }

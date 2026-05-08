@@ -120,6 +120,7 @@ Shader "Custom/ShanghaiToonURP_Wear"
 
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile _ _SHADOWS_SOFT
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS
             #pragma multi_compile_fog
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -276,6 +277,22 @@ Shader "Custom/ShanghaiToonURP_Wear"
                 float3 shadowed = albedo * _ShadowColor.rgb;
                 float3 color    = lerp(shadowed, albedo, lerp(1.0, lit, _ShadowStrength));
                 color *= lerp(1.0, mainLight.color.rgb, 0.5);
+
+                // ----- 额外光源（点光源、聚光灯等）-----
+                #ifdef _ADDITIONAL_LIGHTS
+                int additionalLightsCount = GetAdditionalLightsCount();
+                for (int i = 0; i < additionalLightsCount; i++)
+                {
+                    Light addLight = GetAdditionalLight(i, IN.positionWS);
+                    float3 addL = normalize(addLight.direction);
+                    float addNdotL = max(0, dot(N, addL));
+                    
+                    // 卡通风格的额外光源
+                    float addLit = smoothstep(0.2, 0.3, addNdotL);
+                    float3 addColor = albedo * addLight.color * addLit * addLight.distanceAttenuation;
+                    color += addColor * 0.5;
+                }
+                #endif
 
                 color = MixFog(color, IN.fogCoord);
                 return half4(color, 1.0);
