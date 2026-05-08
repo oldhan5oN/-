@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: "\u6750\u8D28.002"
-  m_Shader: {fileID: 4800000, guid: 055e4257d2f39b14189a410c0fa87d1b, type: 3}
+  m_Shader: {fileID: 4800000, guid: 515338fae78018048a81f5ecb159cd1a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -128,6 +128,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
+    - _AdditionalLightColorInfluence: 1
+    - _AdditionalLightStrength: 1.25
+    - _AdditionalLightToonSoftness: 0.28
     - _AgingTint: 0.693
     - _AlphaClip: 0
     - _AlphaToMask: 0
@@ -191,7 +194,7 @@ Material:
     - _OutlineWarmCool: 1
     - _OutlineWidth: 0.0221
     - _OutlineWobble: 0.265
-    - _OverallBrightness: 2
+    - _OverallBrightness: 0.6
     - _PaletteContrast: 1.83
     - _PaletteSatBoost: 1.795
     - _PaperGrainScale: 20

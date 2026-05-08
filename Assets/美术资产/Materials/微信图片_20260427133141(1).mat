@@ -134,8 +134,8 @@ Material:
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
-    - _noiseScale: 13.4
-    - _noiseStren: 8.11
+    - _noiseScale: 10.79
+    - _noiseStren: 1
     - _smoo: 0
     m_Colors:
     - _BaseColor: {r: 0.9375263, g: 0.9289584, b: 0.9685534, a: 1}
