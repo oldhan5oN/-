@@ -129,13 +129,13 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AdditionalLightColorInfluence: 1
-    - _AdditionalLightStrength: 1.25
-    - _AdditionalLightToonSoftness: 0.28
+    - _AdditionalLightStrength: 0.45
+    - _AdditionalLightToonSoftness: 0.282
     - _AgingTint: 0.693
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _BackEmissionFalloff: 2.75
-    - _BackEmissionStrength: 0.73
+    - _BackEmissionFalloff: 2.81
+    - _BackEmissionStrength: 3.59
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 96
@@ -143,8 +143,8 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ClothHalftoneHueShift: 0.5
-    - _ClothHalftoneScale: 365
-    - _ClothHalftoneStrength: 0.8
+    - _ClothHalftoneScale: 390
+    - _ClothHalftoneStrength: 1
     - _ClothHueOffset: 0.357
     - _Cull: 2
     - _Cutoff: 0.5
@@ -161,8 +161,8 @@ Material:
     - _GlowPower: 1.44
     - _GlowSoftness: 1
     - _GlowStrength: 0.25
-    - _GradientContrast: 1.82
-    - _GradientStrength: 0.274
+    - _GradientContrast: 1.409
+    - _GradientStrength: 1
     - _HalftoneDarken: 1
     - _HalftoneEdgeSoftness: 0.3
     - _HalftoneEnable: 0.146
@@ -170,7 +170,7 @@ Material:
     - _HalftoneHueShift: 0.065
     - _HalftoneMidCoverage: 0.504
     - _HalftoneOpacity: 0.488
-    - _HalftoneRotation: 87.7
+    - _HalftoneRotation: 87.9
     - _HalftoneShadowCoverage: 0
     - _HaloEnable: 0.32
     - _HaloPower: 0.5
@@ -179,11 +179,11 @@ Material:
     - _HighlightStrength: 0.52
     - _HighlightThreshold: 1
     - _InkBleedAmount: 1
-    - _InkBrushDirection: 8
-    - _InkWashDarken: 0.949
-    - _InkWashLightFade: 0
-    - _InkWashScale: 11.29
-    - _InkWashStrength: 0.488
+    - _InkBrushDirection: 4.4
+    - _InkWashDarken: 0.968
+    - _InkWashLightFade: 0.231
+    - _InkWashScale: 11.17
+    - _InkWashStrength: 1
     - _Metallic: 0
     - _Mode: 0
     - _NoiseScale: 18.3
@@ -194,9 +194,9 @@ Material:
     - _OutlineWarmCool: 1
     - _OutlineWidth: 0.0221
     - _OutlineWobble: 0.265
-    - _OverallBrightness: 0.6
-    - _PaletteContrast: 1.83
-    - _PaletteSatBoost: 1.795
+    - _OverallBrightness: 0.522
+    - _PaletteContrast: 1.957
+    - _PaletteSatBoost: 1.921
     - _PaperGrainScale: 20
     - _PaperGrainStrength: 0
     - _Parallax: 0.02
@@ -212,10 +212,10 @@ Material:
     - _ShadowSmooth: 0.2
     - _ShadowStrength: 0.488
     - _ShadowThreshold: -1
-    - _ShanghaiPaletteStrength: 0.89
+    - _ShanghaiPaletteStrength: 0.951
     - _SkinHalftoneHueShift: 0.5
     - _SkinHalftoneScale: 600
-    - _SkinHalftoneStrength: 0.985
+    - _SkinHalftoneStrength: 1
     - _SkinHueOffset: -0.426
     - _Smoothness: 0.067
     - _SmoothnessTextureChannel: 0
@@ -229,12 +229,12 @@ Material:
     - _SunYaw: 324
     - _Surface: 0
     - _TextureScale: 11.12
-    - _ThresholdLight: -0.21
-    - _ThresholdShadow: -0.69
-    - _ToneSmooth: 0.183
-    - _ToneStrength: 0.862
+    - _ThresholdLight: -0.198
+    - _ThresholdShadow: -0.627
+    - _ToneSmooth: 0.1327
+    - _ToneStrength: 0.882
     - _UVSec: 0
-    - _UseGradient: 0.872
+    - _UseGradient: 0.595
     - _UseRampMap: 1
     - _UseRoughnessMap: 0
     - _UseVirtualSun: 0.811
@@ -249,7 +249,7 @@ Material:
     - _smoo: 0.2
     m_Colors:
     - _AgingTintColor: {r: 0.67504925, g: 0.56078434, b: 0.8392157, a: 1}
-    - _BackEmissionColor: {r: 0, g: 0.04614831, b: 0.05660379, a: 1}
+    - _BackEmissionColor: {r: 0.04113759, g: 0.16748337, b: 0.20125782, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _CoolTint: {r: 0.80817604, g: 0.8336618, b: 1, a: 1}
