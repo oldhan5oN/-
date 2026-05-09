@@ -19,14 +19,8 @@ public class GameManager : MonoBehaviour
     public bool autoEnterGameAfterVideo = true;
 
     [Header("输入设置")]
-    [Tooltip("进入游戏按钮")]
-    public KeyCode enterGameKey = KeyCode.Return;
-
-    [Tooltip("重启游戏按钮")]
-    public KeyCode restartKey = KeyCode.R;
-
-    [Tooltip("退出游戏按钮（长按）")]
-    public KeyCode exitKey = KeyCode.Escape;
+    [Tooltip("统一按键（F3）")]
+    public KeyCode actionKey = KeyCode.F3;
 
     [Tooltip("长按退出时间（秒）")]
     public float longPressDuration = 2f;
@@ -36,6 +30,7 @@ public class GameManager : MonoBehaviour
 
     private float exitKeyHoldTime;
     private bool isExiting;
+    private bool hasTriggeredShortPress;
 
     public enum GameState
     {
@@ -87,8 +82,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void HandleIntroVideoInput()
     {
-        // 按下回车键：进入过渡视频
-        if (Input.GetKeyDown(enterGameKey))
+        // 按下 F3 键：进入过渡视频
+        if (Input.GetKeyDown(actionKey))
         {
             EnterTransitionVideoState();
         }
@@ -99,24 +94,35 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void HandleMainGameInput()
     {
-        // 按下 R 键：重启游戏（不播放视频）
-        if (Input.GetKeyDown(restartKey))
+        // 按下 F3 键开始计时
+        if (Input.GetKeyDown(actionKey))
         {
-            RestartGame();
+            exitKeyHoldTime = 0f;
+            hasTriggeredShortPress = false;
         }
 
-        // 长按 Escape 键：退出游戏回到初始视频
-        if (Input.GetKey(exitKey))
+        // 按住 F3 键期间
+        if (Input.GetKey(actionKey))
         {
             exitKeyHoldTime += Time.deltaTime;
 
+            // 达到长按时间，触发退出
             if (exitKeyHoldTime >= longPressDuration && !isExiting)
             {
                 ExitToIntro();
+                hasTriggeredShortPress = true; // 标记已处理，防止松开时触发短按
             }
         }
-        else if (Input.GetKeyUp(exitKey))
+
+        // 松开 F3 键时判断是短按还是长按
+        if (Input.GetKeyUp(actionKey))
         {
+            // 如果没触发长按，且按住时间小于长按时间，算短按
+            if (!hasTriggeredShortPress && exitKeyHoldTime < longPressDuration)
+            {
+                RestartGame();
+            }
+
             exitKeyHoldTime = 0f;
         }
     }
@@ -126,7 +132,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void UpdateExitKeyHold()
     {
-        if (currentState == GameState.MainGame && Input.GetKey(exitKey))
+        if (currentState == GameState.MainGame && Input.GetKey(actionKey))
         {
             // 显示长按进度（可选）
             float progress = exitKeyHoldTime / longPressDuration;
@@ -178,10 +184,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            Debug.LogWarning("没有设置过渡视频播放器，将直接进入游戏");
             // 如果没有过渡视频，直接进入游戏
             if (autoEnterGameAfterVideo)
             {
-                EnterMainGame();
+                Invoke(nameof(EnterMainGame), 0.1f); // 延迟一帧，避免闪烁
             }
         }
     }
@@ -191,17 +198,30 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void EnterMainGame()
     {
+        // 防止重复进入
+        if (currentState == GameState.MainGame)
+        {
+            return;
+        }
+
         currentState = GameState.MainGame;
         Debug.Log("进入主游戏场景");
 
         // 停止所有视频
         StopAllVideos();
 
-        // 加载主场景
-        if (SceneManager.GetActiveScene().name != mainSceneName)
+        // 检查当前场景是否已经是主场景
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        
+        if (currentSceneName == mainSceneName)
         {
-            SceneManager.LoadScene(mainSceneName);
+            Debug.Log("已经在主游戏场景中，无需加载");
+            return;
         }
+
+        // 加载主场景
+        Debug.Log($"从场景 '{currentSceneName}' 加载到场景 '{mainSceneName}'");
+        SceneManager.LoadScene(mainSceneName);
     }
 
     /// <summary>
