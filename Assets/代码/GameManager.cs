@@ -171,10 +171,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("进入过渡视频");
 
         // 停止初始视频
-        if (introVideoPlayer != null)
-        {
-            introVideoPlayer.Stop();
-        }
+        
 
         // 播放过渡视频
         if (transitionVideoPlayer != null)
@@ -190,6 +187,10 @@ public class GameManager : MonoBehaviour
             {
                 Invoke(nameof(EnterMainGame), 0.1f); // 延迟一帧，避免闪烁
             }
+        }
+        if (introVideoPlayer != null)
+        {
+            introVideoPlayer.Stop();
         }
     }
 
