@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: eff_par_1_add
+  m_Shader: {fileID: 4800000, guid: 75cd7352435a0dc4dbfc7bd085993cdc, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BackEmissionMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClothHalftoneTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 6f048f6c0a8854a0a897996817752917, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SkinHalftoneTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SkinMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BackEmissionFalloff: 2.5
+    - _BackEmissionStrength: 0
+    - _ClothHalftoneHueShift: 0
+    - _ClothHalftoneScale: 120
+    - _ClothHalftoneStrength: 0.85
+    - _HalftoneDarken: 0.55
+    - _HalftoneEdgeSoftness: 0.06
+    - _HalftoneEnable: 1
+    - _HalftoneHighlightCoverage: 0.05
+    - _HalftoneMidCoverage: 0.5
+    - _HalftoneOpacity: 0.85
+    - _HalftoneRotation: 27
+    - _HalftoneShadowCoverage: 0.9
+    - _HaloEnable: 1
+    - _HaloPower: 2.2
+    - _HaloSoftness: 0.55
+    - _HaloStrength: 0.8
+    - _OutlineNoiseScale: 12
+    - _OutlineNoiseStrength: 0.45
+    - _OutlineWarmCool: 0
+    - _OutlineWidth: 0.008
+    - _OverallBrightness: 1
+    - _PaperGrainScale: 6
+    - _PaperGrainStrength: 0
+    - _RampStrength: 1
+    - _RetroFilterStrength: 0
+    - _RetroSatBoost: 1.5
+    - _SkinHalftoneHueShift: 0
+    - _SkinHalftoneScale: 260
+    - _SkinHalftoneStrength: 0.3
+    - _ThresholdLight: 0.55
+    - _ThresholdShadow: 0.05
+    - _ToneSmooth: 0.008
+    - _ToneStrength: 1
+    - _UseRampMap: 0
+    - _WarmCoolStrength: 0.5
+    m_Colors:
+    - _BackEmissionColor: {r: 1, g: 0.85, b: 0.54999995, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _CoolTint: {r: 0.78, g: 0.85, b: 1.05, a: 1}
+    - _HaloColor: {r: 1, g: 0.92, b: 0.7, a: 1}
+    - _LightColor: {r: 1, g: 0.97999996, b: 0.92, a: 1}
+    - _MidColor: {r: 0.78, g: 0.72, b: 0.7, a: 1}
+    - _OutlineColor: {r: 0.09999997, g: 0.06999998, b: 0.049999982, a: 1}
+    - _PaperGrainTint: {r: 0.92, g: 0.85, b: 0.68, a: 1}
+    - _RetroShadowTint: {r: 0.7, g: 0.39999998, b: 0.54999995, a: 1}
+    - _RetroWarmShift: {r: 1.12, g: 0.95, b: 0.78, a: 1}
+    - _ShadowColor: {r: 0.45, g: 0.37999994, b: 0.5, a: 1}
+    - _WarmTint: {r: 1.1, g: 0.95, b: 0.8, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

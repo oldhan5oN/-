@@ -1,0 +1,244 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Meshy_AI_Tambourine_Close_Up_0510060359_texture
+  m_Shader: {fileID: 4800000, guid: 75cd7352435a0dc4dbfc7bd085993cdc, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BackEmissionMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: f928f27a46a3149469f28de15f220522, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ClothHalftoneTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: f928f27a46a3149469f28de15f220522, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SkinHalftoneTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SkinMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AddPrecomputedVelocity: 0
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _BackEmissionFalloff: 2.5
+    - _BackEmissionStrength: 0
+    - _Blend: 0
+    - _BlendModePreserveSpecular: 1
+    - _BumpScale: 1
+    - _ClearCoatMask: 0
+    - _ClearCoatSmoothness: 0
+    - _ClothHalftoneHueShift: 0
+    - _ClothHalftoneScale: 140
+    - _ClothHalftoneStrength: 1
+    - _ClothHueOffset: 0
+    - _Cull: 2
+    - _Cutoff: 0.5
+    - _DetailAlbedoMapScale: 1
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
+    - _EnableExternalAlpha: 0
+    - _EnvironmentReflections: 1
+    - _GlossMapScale: 0
+    - _Glossiness: 0
+    - _GlossyReflections: 0
+    - _GlowPower: 2.5
+    - _GlowSoftness: 0.4
+    - _GlowStrength: 0.3
+    - _GradientContrast: 1
+    - _GradientStrength: 0.65
+    - _HalftoneDarken: 0.75
+    - _HalftoneEdgeSoftness: 0.04
+    - _HalftoneEnable: 1
+    - _HalftoneHighlightCoverage: 0.1
+    - _HalftoneHueShift: 0
+    - _HalftoneMidCoverage: 0.635
+    - _HalftoneOpacity: 1
+    - _HalftoneRotation: 27
+    - _HalftoneShadowCoverage: 0.95
+    - _HaloEnable: 1
+    - _HaloPower: 6.87
+    - _HaloSoftness: 0.01
+    - _HaloStrength: 0.14
+    - _InkBleedAmount: 0.5
+    - _InkBrushDirection: 35
+    - _InkWashDarken: 0.7
+    - _InkWashLightFade: 0.85
+    - _InkWashScale: 3.5
+    - _InkWashStrength: 0.6
+    - _Metallic: 0
+    - _OcclusionStrength: 1
+    - _OutlineNoiseScale: 8.4
+    - _OutlineNoiseStrength: 0
+    - _OutlineWarmCool: 1
+    - _OutlineWidth: 0.0237
+    - _OverallBrightness: 2
+    - _PaletteContrast: 1.15
+    - _PaletteSatBoost: 1.4
+    - _PaperGrainScale: 11.2
+    - _PaperGrainStrength: 0.114
+    - _Parallax: 0.005
+    - _QueueOffset: 0
+    - _RampStrength: 1
+    - _ReceiveShadows: 1
+    - _RetroFilterStrength: 0.479
+    - _RetroSatBoost: 1.742
+    - _ShadowSmooth: 0.19
+    - _ShadowStrength: 0
+    - _ShadowThreshold: -0.14
+    - _ShanghaiPaletteStrength: 0
+    - _SkinHalftoneHueShift: 0
+    - _SkinHalftoneScale: 280
+    - _SkinHalftoneStrength: 0.55
+    - _SkinHueOffset: 0
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _SrcBlendAlpha: 1
+    - _SunFollowsView: 1
+    - _SunPitch: 25
+    - _SunWrap: 0.35
+    - _SunYaw: 35
+    - _Surface: 0
+    - _ThresholdLight: -0.77
+    - _ThresholdShadow: -1
+    - _ToneSmooth: 0.2
+    - _ToneStrength: 1
+    - _UseGradient: 0
+    - _UseRampMap: 0.457
+    - _UseVirtualSun: 1
+    - _WarmCoolStrength: 1
+    - _WorkflowMode: 1
+    - _XRMotionVectorsPass: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _BackEmissionColor: {r: 1, g: 0.85, b: 0.54999995, a: 1}
+    - _BaseColor: {r: 0.86477983, g: 0.96664375, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _CoolTint: {r: 0.78, g: 0.85, b: 1.05, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _GlowColor: {r: 1, g: 0.85, b: 0.5, a: 1}
+    - _GradientHighlight: {r: 1, g: 0.92, b: 0.54999995, a: 1}
+    - _GradientMid: {r: 0.85, g: 0.54999995, b: 0.45, a: 1}
+    - _GradientShadow: {r: 0.19999996, g: 0.14999998, b: 0.54999995, a: 1}
+    - _HaloColor: {r: 1, g: 0.92, b: 0.7, a: 1}
+    - _LightColor: {r: 1, g: 0.96, b: 0.86, a: 1}
+    - _MidColor: {r: 0.82, g: 0.65, b: 0.58, a: 1}
+    - _OutlineColor: {r: 0.09999997, g: 0.059999965, b: 0.049999982, a: 1}
+    - _PaletteHigh: {r: 0.97999996, g: 0.85, b: 0.41999996, a: 1}
+    - _PaletteMidA: {r: 0.85, g: 0.29999998, b: 0.21999997, a: 1}
+    - _PaletteMidB: {r: 0.34999996, g: 0.54999995, b: 0.41999996, a: 1}
+    - _PaletteShadow: {r: 0.17999998, g: 0.29999998, b: 0.41999996, a: 1}
+    - _PaperGrainTint: {r: 0.92, g: 0.85, b: 0.68, a: 1}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RetroShadowTint: {r: 0.7, g: 0.39999998, b: 0.54999995, a: 1}
+    - _RetroWarmShift: {r: 1.12, g: 0.95, b: 0.78, a: 1}
+    - _ShadowColor: {r: 0.41999996, g: 0.29999998, b: 0.5, a: 1}
+    - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _WarmTint: {r: 1.1, g: 0.95, b: 0.8, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!114 &924762553509982573
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Editor::UnityEditor.Rendering.Universal.AssetVersion
+  version: 10

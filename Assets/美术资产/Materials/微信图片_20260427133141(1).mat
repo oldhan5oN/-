@@ -26,6 +26,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
+  - _ALPHATEST_ON
   - _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
@@ -43,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: e3e9c8b5235787e4896dae4f715dde18, type: 3}
+        m_Texture: {fileID: 2800000, guid: cee92266a61403e41a6c4fa91a029bfb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -117,9 +118,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
-    - _AlphaClip: 0
-    - _AlphaToMask: 0
-    - _BackEmissionFalloff: 2.5
+    - _AlphaClip: 1
+    - _AlphaToMask: 1
+    - _BackEmissionFalloff: 2.66
     - _BackEmissionStrength: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
@@ -131,7 +132,7 @@ Material:
     - _ClothHalftoneStrength: 0
     - _ClothHueOffset: 0.5
     - _Cull: 2
-    - _Cutoff: 0.5
+    - _Cutoff: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -140,24 +141,24 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GlowPower: 5.48
+    - _GlowPower: 4.52
     - _GlowSoftness: 0.54
-    - _GlowStrength: 1.593
-    - _GradientContrast: 1
-    - _GradientStrength: 0.65
+    - _GlowStrength: 1.76
+    - _GradientContrast: 2
+    - _GradientStrength: 0.534
     - _HalftoneDarken: 0.75
-    - _HalftoneEdgeSoftness: 0.1447
-    - _HalftoneEnable: 1
-    - _HalftoneHighlightCoverage: 0.052
+    - _HalftoneEdgeSoftness: 0.165
+    - _HalftoneEnable: 0.781
+    - _HalftoneHighlightCoverage: 0.06
     - _HalftoneHueShift: 0
     - _HalftoneMidCoverage: 0.992
     - _HalftoneOpacity: 1
-    - _HalftoneRotation: 27
+    - _HalftoneRotation: 71.9
     - _HalftoneShadowCoverage: 0.554
     - _HaloEnable: 1
-    - _HaloPower: 2.2
-    - _HaloSoftness: 0.55
-    - _HaloStrength: 0.8
+    - _HaloPower: 5.5
+    - _HaloSoftness: 0.697
+    - _HaloStrength: 2.26
     - _InkBleedAmount: 0.5
     - _InkBrushDirection: 35
     - _InkWashDarken: 0.7
@@ -166,26 +167,26 @@ Material:
     - _InkWashStrength: 0.6
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineNoiseScale: 0
-    - _OutlineNoiseStrength: 0.45
-    - _OutlineWarmCool: 0
-    - _OutlineWidth: 0
+    - _OutlineNoiseScale: 34
+    - _OutlineNoiseStrength: 0.717
+    - _OutlineWarmCool: 0.45
+    - _OutlineWidth: 0.0052
     - _OverallBrightness: 2
-    - _PaletteContrast: 1.15
-    - _PaletteSatBoost: 1.4
-    - _PaperGrainScale: 1
+    - _PaletteContrast: 2
+    - _PaletteSatBoost: 2.2
+    - _PaperGrainScale: 20
     - _PaperGrainStrength: 0
     - _Parallax: 0.005
     - _QueueControl: 0
-    - _QueueOffset: 0
+    - _QueueOffset: 10
     - _ReceiveShadows: 1
-    - _RetroFilterStrength: 0.525
-    - _RetroSatBoost: 1.5
+    - _RetroFilterStrength: 0.488
+    - _RetroSatBoost: 1.427
     - _SampleGI: 0
-    - _ShadowSmooth: 0.1556
+    - _ShadowSmooth: 0.19
     - _ShadowStrength: 0.983
     - _ShadowThreshold: 1
-    - _ShanghaiPaletteStrength: 0
+    - _ShanghaiPaletteStrength: 0.575
     - _SkinHalftoneScale: 600
     - _SkinHalftoneStrength: 1
     - _SkinHueOffset: 0.5
@@ -195,17 +196,17 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _SunFollowsView: 1
-    - _SunPitch: 25
-    - _SunWrap: 0.35
-    - _SunYaw: 35
+    - _SunPitch: 13
+    - _SunWrap: 1
+    - _SunYaw: 324
     - _Surface: 0
-    - _ThresholdLight: 0.45
-    - _ThresholdShadow: -0.05
-    - _ToneSmooth: 0.06
+    - _ThresholdLight: 1
+    - _ThresholdShadow: 0.56
+    - _ToneSmooth: 0.282
     - _ToneStrength: 1
-    - _UseGradient: 0
-    - _UseVirtualSun: 1
-    - _WarmCoolStrength: 0.5
+    - _UseGradient: 1
+    - _UseVirtualSun: 0.511
+    - _WarmCoolStrength: 0.511
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
@@ -213,15 +214,15 @@ Material:
     - _noiseStren: 1
     - _smoo: 0
     m_Colors:
-    - _BackEmissionColor: {r: 1, g: 0.85, b: 0.54999995, a: 1}
-    - _BaseColor: {r: 0.9375263, g: 0.9289584, b: 0.9685534, a: 1}
-    - _Color: {r: 0.9375263, g: 0.9289584, b: 0.96855336, a: 1}
+    - _BackEmissionColor: {r: 0.73654246, g: 0.122641385, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.8006259, g: 0.7327044, b: 1, a: 1}
     - _CoolTint: {r: 0.78, g: 0.85, b: 1.05, a: 1}
     - _EmissionColor: {r: 0.0078125, g: 0.0023339223, b: 0.0023339223, a: 1}
     - _GlowColor: {r: 1, g: 0.85, b: 0.5, a: 1}
-    - _GradientHighlight: {r: 1, g: 0.92, b: 0.54999995, a: 1}
-    - _GradientMid: {r: 0.85, g: 0.54999995, b: 0.45, a: 1}
-    - _GradientShadow: {r: 0.19999996, g: 0.14999998, b: 0.54999995, a: 1}
+    - _GradientHighlight: {r: 0.51955223, g: 0, b: 1, a: 1}
+    - _GradientMid: {r: 0.8238993, g: 0, b: 0.21770935, a: 1}
+    - _GradientShadow: {r: 0, g: 0.5, b: 1, a: 1}
     - _HaloColor: {r: 1, g: 0.92, b: 0.7, a: 1}
     - _LightColor: {r: 1, g: 0.96, b: 0.86, a: 1}
     - _MidColor: {r: 0.82, g: 0.65, b: 0.58, a: 1}
@@ -230,10 +231,10 @@ Material:
     - _PaletteMidA: {r: 0.85, g: 0.29999998, b: 0.21999997, a: 1}
     - _PaletteMidB: {r: 0.34999996, g: 0.54999995, b: 0.41999996, a: 1}
     - _PaletteShadow: {r: 0.17999998, g: 0.29999998, b: 0.41999996, a: 1}
-    - _PaperGrainTint: {r: 0.92, g: 0.85, b: 0.68, a: 1}
+    - _PaperGrainTint: {r: 1, g: 1, b: 1, a: 1}
     - _RetroShadowTint: {r: 0.7, g: 0.39999998, b: 0.54999995, a: 1}
     - _RetroWarmShift: {r: 1.12, g: 0.95, b: 0.78, a: 1}
-    - _ShadowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowColor: {r: 0.9779874, g: 1, b: 0.9975513, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _WarmTint: {r: 1.1, g: 0.95, b: 0.8, a: 1}
   m_BuildTextureStacks: []

@@ -194,7 +194,7 @@ Material:
     - _OutlineWarmCool: 1
     - _OutlineWidth: 0.0221
     - _OutlineWobble: 0.265
-    - _OverallBrightness: 0.522
+    - _OverallBrightness: 0.95
     - _PaletteContrast: 1.957
     - _PaletteSatBoost: 1.921
     - _PaperGrainScale: 20
@@ -234,7 +234,7 @@ Material:
     - _ToneSmooth: 0.1327
     - _ToneStrength: 0.882
     - _UVSec: 0
-    - _UseGradient: 0.595
+    - _UseGradient: 0.473
     - _UseRampMap: 1
     - _UseRoughnessMap: 0
     - _UseVirtualSun: 0.811

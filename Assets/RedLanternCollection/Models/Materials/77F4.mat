@@ -8,12 +8,12 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 77F4
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: f1b67c61a928f8a4fb79f79230f53729, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - _EMISSION
-  m_InvalidKeywords: []
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -24,6 +24,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -60,26 +64,54 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SkinMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
+    - _ClothHalftoneScale: 120
+    - _ClothHalftoneStrength: 0.85
+    - _ClothHueOffset: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _HalftoneDarken: 0.55
+    - _HalftoneEdgeSoftness: 0.06
+    - _HalftoneEnable: 1
+    - _HalftoneHighlightCoverage: 0.05
+    - _HalftoneHueShift: 0
+    - _HalftoneMidCoverage: 0.5
+    - _HalftoneOpacity: 0.85
+    - _HalftoneRotation: 27
+    - _HalftoneShadowCoverage: 0.85
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OutlineNoiseScale: 12
+    - _OutlineNoiseStrength: 0.45
+    - _OutlineWidth: 0.008
     - _Parallax: 0.02
+    - _ShadowSmooth: 0.005
+    - _ShadowStrength: 0.85
+    - _ShadowThreshold: 0.1
+    - _SkinHalftoneScale: 260
+    - _SkinHalftoneStrength: 0.25
+    - _SkinHueOffset: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.88235295, g: 0.88235295, b: 0.88235295, a: 1}
     - _EmissionColor: {r: 1.5, g: 1.5, b: 1.5, a: 1}
+    - _OutlineColor: {r: 0.11999995, g: 0.079999976, b: 0.049999982, a: 1}
+    - _ShadowColor: {r: 0.54999995, g: 0.45, b: 0.6, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
