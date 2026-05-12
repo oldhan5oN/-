@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Meshy_AI_Straw_hat_with_red_tr_0510033040_texture
+  m_Name: Meshy_AI_Vintage_Leather_Baske_0510071850_texture
   m_Shader: {fileID: 4800000, guid: f1b67c61a928f8a4fb79f79230f53729, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 0a21a4bfe0066994ea924dae24568a01, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9e43d9821e35fac4e986c1b802c23426, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 0a21a4bfe0066994ea924dae24568a01, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9e43d9821e35fac4e986c1b802c23426, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -94,9 +94,9 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ClothHalftoneScale: 120
-    - _ClothHalftoneStrength: 0.918
-    - _ClothHueOffset: 0
+    - _ClothHalftoneScale: 341
+    - _ClothHalftoneStrength: 0
+    - _ClothHueOffset: 0.178
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -107,29 +107,29 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HalftoneDarken: 0.753
+    - _HalftoneDarken: 0.324
     - _HalftoneEdgeSoftness: 0.06
-    - _HalftoneEnable: 0.977
+    - _HalftoneEnable: 0.534
     - _HalftoneHighlightCoverage: 0.05
-    - _HalftoneHueShift: -0.116
+    - _HalftoneHueShift: 0
     - _HalftoneMidCoverage: 0.5
-    - _HalftoneOpacity: 0.311
-    - _HalftoneRotation: 72.2
-    - _HalftoneShadowCoverage: 0.9
+    - _HalftoneOpacity: 0.603
+    - _HalftoneRotation: 27
+    - _HalftoneShadowCoverage: 0.562
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineNoiseScale: 20.4
-    - _OutlineNoiseStrength: 0.808
-    - _OutlineWidth: 0.0068
+    - _OutlineNoiseScale: 0
+    - _OutlineNoiseStrength: 0.484
+    - _OutlineWidth: 0.0272
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _ShadowSmooth: 0.2
-    - _ShadowStrength: 0.288
-    - _ShadowThreshold: -0.43
-    - _SkinHalftoneScale: 260
-    - _SkinHalftoneStrength: 0.699
-    - _SkinHueOffset: 0
+    - _ShadowSmooth: 0.127
+    - _ShadowStrength: 0.85
+    - _ShadowThreshold: -1
+    - _SkinHalftoneScale: 431
+    - _SkinHalftoneStrength: 1
+    - _SkinHueOffset: -0.299
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -144,11 +144,11 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 0.11999995, g: 0.079999976, b: 0.049999982, a: 1}
-    - _ShadowColor: {r: 0.58077496, g: 0.4509804, b: 0.6, a: 1}
+    - _ShadowColor: {r: 0.9622642, g: 0.73841536, b: 0.57796365, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &3942340503336813070
+--- !u!114 &5615835309348020759
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
