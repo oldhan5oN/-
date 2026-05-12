@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,8 @@ public class HeadBallSpawner : MonoBehaviour
     public float checkRadius=0.5f;
     public bool isGrounded=true;
     [Header("球设置")]
-    public GameObject ballPrefab; // 球预制体
+    public List<GameObject> prefabs=new List<GameObject>();//预制体池
+    private GameObject ballPrefab; // 球预制体
     public Transform head; // 头部对象
     public float height = 1.5f; // 头顶上方的高度
     public bool setBallTag = true; // 是否自动设置球标签
@@ -63,6 +65,9 @@ public class HeadBallSpawner : MonoBehaviour
             DestroyBall();
         }
     }
+    private GameObject GetBallPrefab(){
+        return prefabs[Random.Range(0,prefabs.Count)];
+    }
     private void Grounded(){
         if (currentBall == null)
     {
@@ -76,6 +81,7 @@ public class HeadBallSpawner : MonoBehaviour
     public void SpawnBall()
     {
         Grounded();
+        ballPrefab=GetBallPrefab();
         if (ballPrefab == null)
         {
             Debug.LogError("HeadBallSpawner: 没有设置球预制体！");
