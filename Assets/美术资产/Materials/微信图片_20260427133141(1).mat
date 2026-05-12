@@ -141,9 +141,9 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GlowPower: 4.52
-    - _GlowSoftness: 0.54
-    - _GlowStrength: 1.76
+    - _GlowPower: 4.34
+    - _GlowSoftness: 0.603
+    - _GlowStrength: 1.7
     - _GradientContrast: 2
     - _GradientStrength: 0.534
     - _HalftoneDarken: 0.75
@@ -180,8 +180,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 10
     - _ReceiveShadows: 1
-    - _RetroFilterStrength: 0.488
-    - _RetroSatBoost: 1.427
+    - _RetroFilterStrength: 0.608
+    - _RetroSatBoost: 1.454
     - _SampleGI: 0
     - _ShadowSmooth: 0.19
     - _ShadowStrength: 0.983

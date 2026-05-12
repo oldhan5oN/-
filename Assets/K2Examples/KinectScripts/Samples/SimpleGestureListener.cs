@@ -121,7 +121,8 @@ public class SimpleGestureListener : MonoBehaviour, KinectGestures.GestureListen
         {
             case KinectGestures.Gestures.Tpose:
                 Debug.Log("Tpose 检测到！");
-               
+               if (spawner != null)
+                    spawner.SpawnBall();
                 break;
             case KinectGestures.Gestures.SwipeLeft:
                 Debug.Log("SWIPE");

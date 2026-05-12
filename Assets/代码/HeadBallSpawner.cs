@@ -82,6 +82,13 @@ public class HeadBallSpawner : MonoBehaviour
     {
         Grounded();
         ballPrefab=GetBallPrefab();
+        Rigidbody rb = ballPrefab.GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            rb = ballPrefab.AddComponent<Rigidbody>();
+            rb.mass = 1f;
+            rb.useGravity = true;
+        }
         if (ballPrefab == null)
         {
             Debug.LogError("HeadBallSpawner: 没有设置球预制体！");
@@ -106,6 +113,7 @@ public class HeadBallSpawner : MonoBehaviour
         {
             currentBall.tag = "Ball";
         }
+        
         
         if (showDebug)
         {

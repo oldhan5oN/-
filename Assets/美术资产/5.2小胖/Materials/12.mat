@@ -107,9 +107,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
-    - _AdditionalLightColorInfluence: 0.808
-    - _AdditionalLightStrength: 0.25
-    - _AdditionalLightToonSoftness: 0.214
+    - _AdditionalLightColorInfluence: 0.639
+    - _AdditionalLightStrength: 0
+    - _AdditionalLightToonSoftness: 0.256
     - _AgingTint: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
@@ -137,10 +137,10 @@ Material:
     - _GlowPower: 2.5
     - _GlowSoftness: 0.4
     - _GlowStrength: 0
-    - _GradientContrast: 2
-    - _GradientStrength: 0.913
+    - _GradientContrast: 0.6
+    - _GradientStrength: 0.795
     - _HalftoneDarken: 0.75
-    - _HalftoneEdgeSoftness: 0.14
+    - _HalftoneEdgeSoftness: 0.147
     - _HalftoneEnable: 0.607
     - _HalftoneHighlightCoverage: 0.845
     - _HalftoneHueShift: 0
@@ -151,7 +151,7 @@ Material:
     - _HaloEnable: 1
     - _HaloPower: 5.36
     - _HaloSoftness: 0.283
-    - _HaloStrength: 0.48
+    - _HaloStrength: 0.49
     - _InkBleedAmount: 0.5
     - _InkBrushDirection: 35
     - _InkWashDarken: 0.868
@@ -164,7 +164,7 @@ Material:
     - _OutlineNoiseStrength: 0.105
     - _OutlineWarmCool: 0.61
     - _OutlineWidth: 0.0146
-    - _OverallBrightness: 1.21
+    - _OverallBrightness: 1.73
     - _PaletteContrast: 2
     - _PaletteSatBoost: 2.129
     - _PaperGrainScale: 6
@@ -198,11 +198,11 @@ Material:
     - _ThresholdShadow: -1
     - _ToneSmooth: 0.268
     - _ToneStrength: 0.612
-    - _UseGradient: 0.416
+    - _UseGradient: 0.351
     - _UseRampMap: 0
-    - _UseVirtualSun: 0.15
+    - _UseVirtualSun: 0.37
     - _VintageTextureIntensity: 0
-    - _WarmCoolStrength: 0.758
+    - _WarmCoolStrength: 0.616
     - _WearAmount: 0
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
