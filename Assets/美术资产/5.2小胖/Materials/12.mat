@@ -108,7 +108,7 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AdditionalLightColorInfluence: 0.763
-    - _AdditionalLightStrength: 0.75
+    - _AdditionalLightStrength: 2.41
     - _AdditionalLightToonSoftness: 0.315
     - _AgingTint: 0
     - _AlphaClip: 0
@@ -198,9 +198,9 @@ Material:
     - _ThresholdShadow: -1
     - _ToneSmooth: 0.285
     - _ToneStrength: 0.233
-    - _UseGradient: 0.791
+    - _UseGradient: 1
     - _UseRampMap: 0
-    - _UseVirtualSun: 0.955
+    - _UseVirtualSun: 1
     - _VintageTextureIntensity: 0
     - _WarmCoolStrength: 0.396
     - _WearAmount: 0
