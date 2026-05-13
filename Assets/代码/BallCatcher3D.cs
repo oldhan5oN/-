@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class BallCatcher3D : MonoBehaviour
 {
@@ -24,6 +25,9 @@ public class BallCatcher3D : MonoBehaviour
     private Quaternion backTargetRot;
     private Quaternion leftTargetRot;
     private Quaternion rightTargetRot;
+    private bool Istime;
+    private float timer;
+    public float boomtime=5f;
 
     private void Start()
     {
@@ -33,12 +37,27 @@ public class BallCatcher3D : MonoBehaviour
         {
             Debug.Log("BallCatcher3D: 启动！挡板已隐藏（等待球进入）");
         }
+        timer=0;
     }
 
     private void Update()
     {
         
             LerpGuards();
+            Timer();
+            Debug.Log(timer);
+            if(timer>boomtime)
+            {
+                VfxMannager.Instance.PlayEffets(0,transform);
+                Istime=false;
+            }
+            
+    }
+    private void Timer(){
+        if(Istime)
+        timer+=Time.deltaTime;
+        else
+        timer=0;
     }
 
     private void LerpGuards()
@@ -70,6 +89,7 @@ public class BallCatcher3D : MonoBehaviour
             // 球进入时：显示挡板并立即关闭（垂直状态）
             ShowGuards();
             CloseGuards();
+            Istime=true;
             
             if (showDebug) Debug.Log("BallCatcher3D: 球进入！显示挡板并关闭");
         }
@@ -83,6 +103,7 @@ public class BallCatcher3D : MonoBehaviour
             // 球离开时：隐藏挡板
             HideGuards();
             OpenGuards();
+            Istime=false;
             if (showDebug) Debug.Log("BallCatcher3D: 球离开！隐藏挡板");
         }
     }
