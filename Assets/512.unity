@@ -4245,7 +4245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2198087719833444423, guid: 11b9f5b9c3e18774db3205a65c3486dd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4525,7 +4525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4366900416175663912, guid: c75e302e0191e4049ad0274e59a3a7b8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.02
+      value: 1.54
       objectReference: {fileID: 0}
     - target: {fileID: 4366900416175663912, guid: c75e302e0191e4049ad0274e59a3a7b8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5947,6 +5947,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef09f1ed49544d444bd8243d772e14b0, type: 3}
+--- !u!1 &1999067658 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1972372085943186, guid: 88c583ec00345734f9ea3caaabcbdc50, type: 3}
+  m_PrefabInstance: {fileID: 1124428090}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2060897184
 GameObject:
   m_ObjectHideFlags: 0
@@ -6198,6 +6203,52 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
+--- !u!1 &2070567933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2070567935}
+  - component: {fileID: 2070567934}
+  m_Layer: 0
+  m_Name: "\u7C92\u5B50\u7BA1\u7406\u5668"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2070567934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070567933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d76818fc8a626d4f846fd8a2e3e030e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VfxMannager
+  Vfx:
+  - {fileID: 1999067658}
+--- !u!4 &2070567935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070567933}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.07859, y: 0.94127, z: 1.98139}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2117574756
 GameObject:
   m_ObjectHideFlags: 0
@@ -6823,6 +6874,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 689916204606952313, guid: 76a5dcc4b64f7414e960586bc9e33872, type: 3}
+      propertyPath: 'prefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 6792734482959347845, guid: 08ef9fa4fbc736a43a6292f45a561dc4, type: 3}
+    - target: {fileID: 689916204606952313, guid: 76a5dcc4b64f7414e960586bc9e33872, type: 3}
+      propertyPath: 'prefabs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4445045786680330677, guid: dd50edbdb67e071479d986641c5b6cc2, type: 3}
+    - target: {fileID: 689916204606952313, guid: 76a5dcc4b64f7414e960586bc9e33872, type: 3}
+      propertyPath: 'prefabs.Array.data[3]'
+      value: 
+      objectReference: {fileID: 3858459345456382809, guid: fe3a8084b44bfb94e87a41deff268fb2, type: 3}
+    - target: {fileID: 689916204606952313, guid: 76a5dcc4b64f7414e960586bc9e33872, type: 3}
+      propertyPath: 'prefabs.Array.data[4]'
+      value: 
+      objectReference: {fileID: 9101634355677565286, guid: c827703cb77ec8642ace333f944b5869, type: 3}
+    - target: {fileID: 689916204606952313, guid: 76a5dcc4b64f7414e960586bc9e33872, type: 3}
+      propertyPath: 'prefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: 8958860508314972387, guid: 12a8dcd4eb162e840b7fa07805c2c58f, type: 3}
     - target: {fileID: 897747110492330757, guid: 76a5dcc4b64f7414e960586bc9e33872, type: 3}
       propertyPath: kinectManager
       value: 
@@ -7052,6 +7123,7 @@ SceneRoots:
   - {fileID: 802782187}
   - {fileID: 1430595381}
   - {fileID: 317514848}
+  - {fileID: 2070567935}
   - {fileID: 1300833079}
   - {fileID: 486147108}
   - {fileID: 4571943306012819246}

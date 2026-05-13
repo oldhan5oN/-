@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -49,8 +48,7 @@ public class BallCatcher3D : MonoBehaviour
             Debug.Log(timer);
             if(timer>boomtime)
             {
-                VisualEffect vfx=VfxMannager.Instance.Ins(0,transform);
-                vfx.Play();
+                VfxMannager.Instance.PlayEffets(0,transform);
                 Istime=false;
             }
             

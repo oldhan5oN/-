@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime;
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class VfxMannager : MonoBehaviour
 {
@@ -19,10 +18,10 @@ public class VfxMannager : MonoBehaviour
         }
     }
     public List<GameObject> Vfx=new List<GameObject>();
-    public VisualEffect Ins(int a,Transform b){
+    public void PlayEffets(int a,Transform b){
         GameObject instance=Instantiate(Vfx[a],b);
-        var vfx=instance.GetComponent<VisualEffect>();
-        return vfx;
+        var vfx=instance.GetComponent<ParticleSystem>();
+        vfx.Play();
     }
 
 }
