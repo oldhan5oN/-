@@ -119,14 +119,14 @@ Material:
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _BackEmissionFalloff: 2.5
-    - _BackEmissionStrength: 0
+    - _BackEmissionStrength: 0.11
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ClothHalftoneHueShift: 0
-    - _ClothHalftoneScale: 120
+    - _ClothHalftoneHueShift: -0.162
+    - _ClothHalftoneScale: 63
     - _ClothHalftoneStrength: 0.85
     - _Cull: 2
     - _Cutoff: 0.5
@@ -138,33 +138,33 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HalftoneDarken: 0.55
-    - _HalftoneEdgeSoftness: 0.06
+    - _HalftoneDarken: 0.367
+    - _HalftoneEdgeSoftness: 0.097
     - _HalftoneEnable: 0.89
     - _HalftoneHighlightCoverage: 0.05
-    - _HalftoneMidCoverage: 0.5
+    - _HalftoneMidCoverage: 0.548
     - _HalftoneOpacity: 0.85
-    - _HalftoneRotation: 27
+    - _HalftoneRotation: 80.4
     - _HalftoneShadowCoverage: 0.9
-    - _HaloEnable: 0.342
-    - _HaloPower: 2.2
-    - _HaloSoftness: 0.55
-    - _HaloStrength: 0.8
+    - _HaloEnable: 0.539
+    - _HaloPower: 3.67
+    - _HaloSoftness: 1
+    - _HaloStrength: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineNoiseScale: 30.4
-    - _OutlineNoiseStrength: 0.425
-    - _OutlineWarmCool: 0
-    - _OutlineWidth: 0.008
-    - _OverallBrightness: 1.14
-    - _PaperGrainScale: 6
+    - _OutlineNoiseScale: 9.6
+    - _OutlineNoiseStrength: 0.251
+    - _OutlineWarmCool: 0.55
+    - _OutlineWidth: 0.0121
+    - _OverallBrightness: 1.13
+    - _PaperGrainScale: 10.5
     - _PaperGrainStrength: 0
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _RampStrength: 1
     - _ReceiveShadows: 1
     - _RetroFilterStrength: 0
-    - _RetroSatBoost: 1.5
+    - _RetroSatBoost: 1.813
     - _SkinHalftoneHueShift: 0
     - _SkinHalftoneScale: 260
     - _SkinHalftoneStrength: 0.3
@@ -174,12 +174,12 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _ThresholdLight: -1
-    - _ThresholdShadow: -1
-    - _ToneSmooth: 0
-    - _ToneStrength: 1
-    - _UseRampMap: 0.548
-    - _WarmCoolStrength: 0.607
+    - _ThresholdLight: -0.84
+    - _ThresholdShadow: 0.76
+    - _ToneSmooth: 0.122
+    - _ToneStrength: 0.676
+    - _UseRampMap: 0.804
+    - _WarmCoolStrength: 0.539
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1

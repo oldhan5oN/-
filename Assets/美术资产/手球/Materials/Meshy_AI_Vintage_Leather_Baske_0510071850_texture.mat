@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Meshy_AI_Vintage_Leather_Baske_0510071850_texture
-  m_Shader: {fileID: 4800000, guid: f1b67c61a928f8a4fb79f79230f53729, type: 3}
+  m_Shader: {fileID: 4800000, guid: 82aa4c84d32927e41a756f55fca398f6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -116,17 +116,22 @@ Material:
     - _HalftoneOpacity: 0.603
     - _HalftoneRotation: 27
     - _HalftoneShadowCoverage: 0.562
+    - _HighlightStrength: 0.006
+    - _HighlightThreshold: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _OutlineNoiseScale: 0
-    - _OutlineNoiseStrength: 0.484
-    - _OutlineWidth: 0.0272
+    - _OutlineNoiseStrength: 0.305
+    - _OutlineWidth: 0.0385
+    - _OutlineWobble: 0.968
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _ShadowSmooth: 0.127
-    - _ShadowStrength: 0.85
-    - _ShadowThreshold: -1
+    - _RimPower: 7.92
+    - _RimStrength: 0.47
+    - _ShadowSmooth: 0.049
+    - _ShadowStrength: 0
+    - _ShadowThreshold: -0.65
     - _SkinHalftoneScale: 431
     - _SkinHalftoneStrength: 1
     - _SkinHueOffset: -0.299
@@ -143,8 +148,10 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HighlightColor: {r: 1.1, g: 1.05, b: 0.9, a: 1}
     - _OutlineColor: {r: 0.11999995, g: 0.079999976, b: 0.049999982, a: 1}
-    - _ShadowColor: {r: 0.9622642, g: 0.73841536, b: 0.57796365, a: 1}
+    - _RimColor: {r: 1, g: 0.9, b: 0.7, a: 1}
+    - _ShadowColor: {r: 0.88243777, g: 0.83962256, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
