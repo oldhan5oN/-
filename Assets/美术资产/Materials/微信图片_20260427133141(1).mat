@@ -141,9 +141,9 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _GlowPower: 4.24
-    - _GlowSoftness: 0.673
-    - _GlowStrength: 1.91
+    - _GlowPower: 3.89
+    - _GlowSoftness: 0.757
+    - _GlowStrength: 1.9
     - _GradientContrast: 2
     - _GradientStrength: 0.534
     - _HalftoneDarken: 0.75
@@ -167,25 +167,25 @@ Material:
     - _InkWashStrength: 0.6
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _OutlineNoiseScale: 34
+    - _OutlineNoiseScale: 40.9
     - _OutlineNoiseStrength: 0.915
     - _OutlineWarmCool: 0.45
-    - _OutlineWidth: 0.0052
+    - _OutlineWidth: 0.0098
     - _OverallBrightness: 2
     - _PaletteContrast: 2
     - _PaletteSatBoost: 2.2
     - _PaperGrainScale: 20
-    - _PaperGrainStrength: 0
+    - _PaperGrainStrength: 0.361
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 10
     - _ReceiveShadows: 1
-    - _RetroFilterStrength: 0.467
+    - _RetroFilterStrength: 0.437
     - _RetroSatBoost: 1.578
     - _SampleGI: 0
     - _ShadowSmooth: 0.2
     - _ShadowStrength: 1
-    - _ShadowThreshold: 1
+    - _ShadowThreshold: 0.83
     - _ShanghaiPaletteStrength: 0.575
     - _SkinHalftoneScale: 600
     - _SkinHalftoneStrength: 1

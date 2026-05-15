@@ -108,8 +108,8 @@ Material:
     m_Floats:
     - _AddPrecomputedVelocity: 0
     - _AdditionalLightColorInfluence: 0.763
-    - _AdditionalLightStrength: 0.75
-    - _AdditionalLightToonSoftness: 0.315
+    - _AdditionalLightStrength: 3.51
+    - _AdditionalLightToonSoftness: 0.285
     - _AgingTint: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
@@ -137,8 +137,8 @@ Material:
     - _GlowPower: 2.5
     - _GlowSoftness: 0.4
     - _GlowStrength: 0
-    - _GradientContrast: 0.56
-    - _GradientStrength: 0.65
+    - _GradientContrast: 0.7
+    - _GradientStrength: 0.519
     - _HalftoneDarken: 0.227
     - _HalftoneEdgeSoftness: 0.062
     - _HalftoneEnable: 0.672
@@ -148,10 +148,10 @@ Material:
     - _HalftoneOpacity: 0.93
     - _HalftoneRotation: 59.8
     - _HalftoneShadowCoverage: 0.44
-    - _HaloEnable: 1
+    - _HaloEnable: 0.637
     - _HaloPower: 8
-    - _HaloSoftness: 0.01
-    - _HaloStrength: 0.76
+    - _HaloSoftness: 0.261
+    - _HaloStrength: 1.13
     - _InkBleedAmount: 0.5
     - _InkBrushDirection: 35
     - _InkWashDarken: 0.868
@@ -162,9 +162,9 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineNoiseScale: 0
     - _OutlineNoiseStrength: 0.484
-    - _OutlineWarmCool: 0.17
-    - _OutlineWidth: 0.0153
-    - _OverallBrightness: 1.73
+    - _OutlineWarmCool: 0.18
+    - _OutlineWidth: 0.0081
+    - _OverallBrightness: 1.98
     - _PaletteContrast: 2
     - _PaletteSatBoost: 2.129
     - _PaperGrainScale: 6
@@ -188,19 +188,19 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _SunFollowsView: 0.676
-    - _SunPitch: 42
-    - _SunWrap: 0.607
-    - _SunYaw: 66
+    - _SunFollowsView: 0.923
+    - _SunPitch: 50
+    - _SunWrap: 0.709
+    - _SunYaw: 294
     - _Surface: 0
     - _TextureScale: 4
-    - _ThresholdLight: -1
+    - _ThresholdLight: -0.74
     - _ThresholdShadow: -1
-    - _ToneSmooth: 0.285
-    - _ToneStrength: 0.233
-    - _UseGradient: 0.791
+    - _ToneSmooth: 0.19
+    - _ToneStrength: 0
+    - _UseGradient: 1
     - _UseRampMap: 0
-    - _UseVirtualSun: 0.955
+    - _UseVirtualSun: 0.79
     - _VintageTextureIntensity: 0
     - _WarmCoolStrength: 0.396
     - _WearAmount: 0
@@ -229,7 +229,7 @@ Material:
     - _PaperGrainTint: {r: 0.92, g: 0.85, b: 0.68, a: 1}
     - _RetroShadowTint: {r: 0.7, g: 0.39999998, b: 0.54999995, a: 1}
     - _RetroWarmShift: {r: 1.12, g: 0.95, b: 0.78, a: 1}
-    - _ShadowColor: {r: 0.41999996, g: 0.29999998, b: 0.5, a: 1}
+    - _ShadowColor: {r: 0.4399679, g: 0.29803923, b: 0.5019608, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _WarmTint: {r: 1.1, g: 0.95, b: 0.8, a: 1}
     - _WearDirtColor: {r: 0.31999996, g: 0.25999996, b: 0.19999996, a: 1}
