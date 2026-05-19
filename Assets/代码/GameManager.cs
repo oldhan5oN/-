@@ -262,6 +262,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+
+//外部调用接口
     public void PublicEnterGame()
     {
         switch (currentState)
